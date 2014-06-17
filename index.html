@@ -8,6 +8,8 @@
     <script type="text/javascript" src="http://j96.me:8888/faye/client.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script type="text/javascript">
+      var max_price = 0;
+      var min_price = 99999999;
       $(function() {
         try
         {
@@ -15,16 +17,16 @@
             json = _.sortBy(json, function(item) { return item.time });
             
             for(i in json)
-              addRow(json[i]);  
+              addRow(json[i], false);  
             
           });
 
           var client = new Faye.Client('http://j96.me:8888/faye');
           var xcoin_sub = client.subscribe('/xcoin', function(json){
-            addRow(json.trade);
+            addRow(json.trade, true);
           });
           var korbit_sub = client.subscribe('/korbit', function(json){
-            addRow(json.trade);
+            addRow(json.trade, true);
           });
         }
         catch(e)
@@ -33,19 +35,63 @@
         }
       });
       
-      function addRow(json) {
-        $('#history tbody').prepend(makeRow(json));  
+      function addRow(json, can_flash) {
+        var new_item = $('#history tbody').prepend(makeRow(json));  
+        if(can_flash)
+          flash(new_item, 'green');
       }
       
       function makeRow(json) {
+        var is_max = false;
+        var is_min = false;
+        var is_large_amount = false;
+        
+        if(max_price < parseInt(json.price))
+        {
+          is_max = true;
+          max_price = parseInt(json.price);
+        }
+        
+        if(min_price > parseInt(json.price))
+        {
+          is_min = true;
+          min_price = parseInt(json.price);
+        }
+          
+        if(parseInt(json.last_qty) >= 10)
+          is_large_amount = true;
         
         return '<tr id="' + json.site + '"><td id="time">' + json.time + '</td>' +
-          '<td id="price">' + numeral(json.price).format('0,0') + '(' + json.site.toUpperCase() + ')</td>' +
+          '<td id="price" class="' + (is_max?'max':(is_min?'min':''))+ '">' + numeral(json.price).format('0,0') + ' (' + json.site.slice(0,1).toUpperCase() + ')</td>' +
           '<td id="bitstamp">' + json.bitstamp + '</td>' +
-          '<td id="volume">' + numeral(json.last_qty).format('0[.]00') + '</td>';
+          '<td id="volume" class="' + (is_large_amount?'large_amount':'') + '">' + depth_style(json.last_qty, 2) + '</td>';
       }
       function log(str) {
         //$('#log').val(str + '\n' + $('#log').val());
+      };
+      
+      zero = ["", "0", "00", "000", "0000"];
+      function depth_style(num, digit) {
+        var d = parseFloat(num).toFixed(digit);
+        for (var n = d.length, i = 1; i < digit;)
+          if (d.charAt(n - i) == "0")
+            i++;
+          else {
+            if (i == 1)
+              return d;
+            break
+          }
+        return d.slice(0, n - i + 1) + '<span class="zero">' + zero[i - 1] + "</span>"
+      }
+      
+      function flash(element, type) {
+        if (type == '')
+          return;
+        $(element).addClass(type);
+        setTimeout(function () {
+          $(element).removeClass(type);
+        }, 1000);
+
       };
     </script>
     <style>
@@ -72,20 +118,35 @@
       }
       table #price {
         width: 40%;
+        text-align: left;
+        padding-left: 10%;
       }
       table #bitstamp {
         width: 20%;
       }
       table #volume {
-/*        padding-left: 20px;*/
-        text-align: left;
+        padding-right: 4%;
+        text-align: right;
       }
-      #xcoin {
-        background-color: #FCB340;
+      
+      .zero {
+        color: gray;
       }
-      #korbit {
-        background-color: #f7f7f7;
-        color: black;
+      .max {
+/*        color: blue;*/
+        font-weight: bold;
+      }
+      .min {
+/*        color: red;*/
+        font-weight: bold;
+      }
+      .large_amount {
+        color: red;
+        font-weight: bold;
+      }
+      
+      .green {
+        background-color: #72bf44;
       }
     </style>
   </head>
@@ -94,7 +155,7 @@
       <thead>
         <tr>
           <td>Time</td>
-          <td>Last Price</td>
+          <td id="price">Last Price</td>
           <td>Bitstamp</td>
           <td id="volume">Qty</td>
         </tr>
