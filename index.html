@@ -40,7 +40,7 @@
       function makeRow(json) {
         
         return '<tr id="' + json.site + '"><td id="time">' + json.time + '</td>' +
-          '<td id="price">' + numeral(json.price).format('0,0') + '(' + json.site.slice(0,1).toUpperCase() + ')</td>' +
+          '<td id="price">' + numeral(json.price).format('0,0') + '(' + json.site.toUpperCase() + ')</td>' +
           '<td id="bitstamp">' + json.bitstamp + '</td>' +
           '<td id="volume">' + numeral(json.last_qty).format('0[.]00') + '</td>';
       }
@@ -60,9 +60,11 @@
         margin: 0px;
         padding: 0px;
         width: 100%;
+        border: 0px;
+        border-collapse:collapse;
       }
+      
       table td {
-        border: 0px solid black;
         text-align: center;
       }
       table #time {
@@ -78,11 +80,12 @@
 /*        padding-left: 20px;*/
         text-align: left;
       }
-      #xcoin #price{
-        background-color: red;
+      #xcoin {
+        background-color: #FCB340;
       }
-      #korbit #price{
-        background-color: green;
+      #korbit {
+        background-color: #f7f7f7;
+        color: black;
       }
     </style>
   </head>
