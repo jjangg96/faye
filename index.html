@@ -5,13 +5,13 @@
     <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/earlyaccess/hanna.css">
     <script type="text/javascript" src="underscore.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/numeral.js/1.4.5/numeral.min.js"></script>
-    <script type="text/javascript" src="http://localhost:8888/faye/client.js"></script>
+    <script type="text/javascript" src="http://j96.me:8888/faye/client.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script type="text/javascript">
       $(function() {
         try
         {
-          $.getJSON('http://localhost:8888',function(json) {
+          $.getJSON('http://j96.me:8888',function(json) {
             json = _.sortBy(json, function(item) { return item.time });
             
             for(i in json)
@@ -19,7 +19,7 @@
             
           });
 
-          var client = new Faye.Client('http://localhost:8888/faye');
+          var client = new Faye.Client('http://j96.me:8888/faye');
           var xcoin_sub = client.subscribe('/xcoin', function(json){
             addRow(json.trade);
           });
