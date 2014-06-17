@@ -3,7 +3,7 @@
 
 var http = require('http'),
     faye = require('faye'),
-    port = 8000;
+    port = 8888;
 
 var bayeux = new faye.NodeAdapter({mount: '/faye', timeout: 45});
 
