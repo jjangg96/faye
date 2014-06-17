@@ -36,9 +36,9 @@
       });
       
       function addRow(json, can_flash) {
-        var new_item = $('#history tbody').prepend(makeRow(json));  
+        $('#history tbody').prepend(makeRow(json));  
         if(can_flash)
-          flash(new_item, 'green');
+          flash($('#history tbody tr:first'), 'green');
       }
       
       function makeRow(json) {
