@@ -123,7 +123,7 @@ end
 
 
 def read_price(price, site)
-  =begin
+=begin
     system("say -v Yuna '" + site + " 최저까 갱신 : " + price + "원'") if @last_saved_low_price != nil && @last_saved_low_price > price.to_i
     system("say -v Yuna '" + site + " 최고까 갱신 : " + price + "원'") if @last_saved_high_price != nil && @last_saved_high_price < price.to_i
 
@@ -134,7 +134,7 @@ def read_price(price, site)
         system("say -v Yuna '비뜨스템프 " + (bitstamp_price - @last_bitstamp_price).to_s + " 달러 오름'");
       end
     end
-    =end
+=end
   @last_saved_low_price = price.to_i if @last_saved_low_price == nil
   @last_saved_high_price = price.to_i if @last_saved_high_price == nil
 
