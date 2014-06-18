@@ -1,75 +1,73 @@
 <html>
   <head>
     <title>Hello, Korea!</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/earlyaccess/hanna.css">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">    
     <script type="text/javascript" src="underscore.js"></script>
+    <script type="text/javascript" src="moment-with-langs.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/numeral.js/1.4.5/numeral.min.js"></script>
     <script type="text/javascript" src="http://j96.me:8888/faye/client.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
     <script type="text/javascript">
       var max_price = 0;
       var min_price = 99999999;
-      $(function() {
-        try
-        {
-          $.getJSON('http://j96.me:8888',function(json) {
-            json = _.sortBy(json, function(item) { return item.time });
-            
-            for(i in json)
-              addRow(json[i], false);  
-            
-          });
 
-          var client = new Faye.Client('http://j96.me:8888/faye');
-          var xcoin_sub = client.subscribe('/xcoin', function(json){
-            addRow(json.trade, true);
-          });
-          var korbit_sub = client.subscribe('/korbit', function(json){
-            addRow(json.trade, true);
-          });
-        }
-        catch(e)
-        {
-          log(e);
-        }
+      $(function() {
+        $.getJSON('http://j96.me:8888',function(json) {
+
+
+          var history = json.history
+          history = _.sortBy(history, function(item) { return item.time });
+
+          for(i in history)
+            addRow(history[i], false);  
+
+          $('#min_max tbody tr:last').append('<td id="min">' + json['min'] + '</td><td id="max">' + json['max'] + '</td>');
+
+        });
+
+        var client = new Faye.Client('http://j96.me:8888/faye');
+        client.subscribe('/trade', function(json){ addRow(json.trade, true); });
+        client.subscribe('/min', function(json){ $('#min').text(json.price); });
+        client.subscribe('/max', function(json){ $('#max').text(json.price); });
       });
-      
+
       function addRow(json, can_flash) {
         $('#history tbody').prepend(makeRow(json));  
         if(can_flash)
           flash($('#history tbody tr:first'), 'green');
       }
-      
+
       function makeRow(json) {
         var is_max = false;
         var is_min = false;
         var is_large_amount = false;
-        
+
         if(max_price < parseInt(json.price))
         {
           is_max = true;
           max_price = parseInt(json.price);
         }
-        
+
         if(min_price > parseInt(json.price))
         {
           is_min = true;
           min_price = parseInt(json.price);
         }
-          
+
         if(parseInt(json.last_qty) >= 10)
           is_large_amount = true;
-        
-        return '<tr id="' + json.site + '"><td id="time">' + json.time + '</td>' +
-          '<td id="price" class="' + (is_max?'max':(is_min?'min':''))+ '">' + numeral(json.price).format('0,0') + ' (' + json.site.slice(0,1).toUpperCase() + ')</td>' +
+
+        return '<tr id="' + json.site + '"><td id="time">' + moment.unix(json.time).format('HH:mm') + '</td>' +
+          '<td id="price" class="' + (is_max?'max':(is_min?'min':'')) + '">' + numeral(json.price).format('0,0') + ' (' + json.site.slice(0,1).toUpperCase() + ')' + (is_max?'↑':(is_min?'↓':'')) + '</td>' +
           '<td id="bitstamp">' + json.bitstamp + '</td>' +
           '<td id="volume" class="' + (is_large_amount?'large_amount':'') + '">' + depth_style(json.last_qty, 2) + '</td>';
       }
       function log(str) {
         //$('#log').val(str + '\n' + $('#log').val());
       };
-      
+
       zero = ["", "0", "00", "000", "0000"];
       function depth_style(num, digit) {
         var d = parseFloat(num).toFixed(digit);
@@ -83,7 +81,7 @@
           }
         return d.slice(0, n - i + 1) + '<span class="zero">' + zero[i - 1] + "</span>"
       }
-      
+
       function flash(element, type) {
         if (type == '')
           return;
@@ -109,7 +107,12 @@
         border: 0px;
         border-collapse:collapse;
       }
-      
+
+      #min_max tr td {
+        border: 1px solid black;
+        background-color: gray;
+      }
+
       table td {
         text-align: center;
       }
@@ -128,29 +131,40 @@
         padding-right: 4%;
         text-align: right;
       }
-      
+
       .zero {
         color: gray;
       }
       .max {
-/*        color: blue;*/
-        font-weight: bold;
+        color: #72bf44;
+
       }
       .min {
-/*        color: red;*/
-        font-weight: bold;
+        color: red;
       }
       .large_amount {
         color: red;
         font-weight: bold;
       }
-      
+
       .green {
         background-color: #72bf44;
       }
     </style>
   </head>
   <body>
+    <table id="min_max">
+      <thead>
+        <tr>
+          <td>최저가</td>
+          <td>최고가</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr></tr>
+      </tbody>
+    </table>
+
     <table id="history">
       <thead>
         <tr>

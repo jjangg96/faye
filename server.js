@@ -28,7 +28,8 @@ exports.start = function start(custom_server, publish_callback)
   }
   
   console.log('faye server started, port ' + port);
-
+  exports.client = bayeux.getClient();
+  
   if(publish_callback != null)
   {
     bayeux.on('publish', publish_callback);
