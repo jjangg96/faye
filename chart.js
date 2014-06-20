@@ -1,1 +1,1 @@
-../D3-Candlestick-Chart/min_chart.js
+chart/min_chart.js
