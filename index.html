@@ -18,8 +18,10 @@
       var bitstamp_max_price = 0;
       var bitstamp_min_price = 99999999;
       $(function() {
+        
         $.getJSON('http://j96.me:8888',function(json) {
-
+          
+          
 
           var history = json.history
           history = _.sortBy(history, function(item) { return item.time });

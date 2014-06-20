@@ -105,3 +105,8 @@ rect.green {
 rect.red {
   fill: rgb(224,31,38);
 }
+
+line.current_volume {
+  stroke: white;
+  stroke-width: 1;
+}

@@ -3,7 +3,7 @@ var lastest_timestamp;
 var olhc_list = [];
 var graph_type = 60; // second
 
-getOLHC(0, function() { init(); });
+getOLHC(0, function() { set_size(document.body.clientWidth, 350); init(); });
 
 function add_to_olhc(json) {
   //{"t":1403252441,"p":585,"v":4};
