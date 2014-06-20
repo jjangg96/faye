@@ -95,3 +95,13 @@ table #volume {
   font: 10px sans-serif;
   fill: #fff;
 }
+
+rect.green {
+  fill: black;
+  stroke-width:1;
+  stroke: rgb(76, 214, 15);
+}
+
+rect.red {
+  fill: rgb(224,31,38);
+}
