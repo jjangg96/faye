@@ -15,7 +15,7 @@ require 'eventmachine'
 
 def bitstamp_price
   json = JSON.parse(parse_http('https://www.bitstamp.net/api/ticker/'))
-  json['last'].to_i
+  json['last']
 end
 
 def broadcast(channel, text)
@@ -66,10 +66,12 @@ def xcoin
         break
       end 
 
-      text = "%s\t%s(%s)\t%.2f\t%s\n" % [Time.at(time).strftime(%"%H:%M"), show_price(last_price), bitstamp_price.to_s, last_qty, "xcoin"]
+      bitstamp = bitstamp_price
+      
+      text = "%s\t%s(%s)\t%.2f\t%s\n" % [Time.at(time).strftime(%"%H:%M"), show_price(last_price), bitstamp.to_s, last_qty, "xcoin"]
       puts text;
 
-      broadcast("/trade", {'trade' => {'time' => time, 'price' => last_price, 'bitstamp' => bitstamp_price, 'last_qty' => last_qty, 'site' => 'xcoin'}})
+      broadcast("/trade", {'trade' => {'time' => time, 'price' => last_price, 'bitstamp' => bitstamp, 'last_qty' => last_qty, 'site' => 'xcoin'}})
 
       read_price(last_price, '엑스꼬인')
 
@@ -103,10 +105,12 @@ def korbit
         break
       end 
 
-      text = "%s\t%s(%s)\t%.2f\t%s\n" % [Time.at(time).strftime(%"%H:%M"), show_price(last_price), bitstamp_price.to_s, last_qty, "korbit"]
+      bitstamp = bitstamp_price
+      
+      text = "%s\t%s(%s)\t%.2f\t%s\n" % [Time.at(time).strftime(%"%H:%M"), show_price(last_price), bitstamp.to_s, last_qty, "korbit"]
       puts text;
 
-      broadcast("/trade", {'trade' => {'time' => time, 'price' => last_price, 'bitstamp' => bitstamp_price, 'last_qty' => last_qty, 'site' => 'korbit'}})
+      broadcast("/trade", {'trade' => {'time' => time, 'price' => last_price, 'bitstamp' => bitstamp, 'last_qty' => last_qty, 'site' => 'korbit'}})
 
       read_price(last_price, '꼬빗')
 
@@ -134,7 +138,7 @@ def read_price(price, site)
         system("say -v Yuna '비뜨스템프 " + (bitstamp_price - @last_bitstamp_price).to_s + " 달러 오름'");
       end
     end
-=end
+
   @last_saved_low_price = price.to_i if @last_saved_low_price == nil
   @last_saved_high_price = price.to_i if @last_saved_high_price == nil
 
@@ -142,6 +146,7 @@ def read_price(price, site)
   @last_saved_high_price = [price.to_i, @last_saved_high_price].max
 
   @last_bitstamp_price = bitstamp_price
+=end
 end
 
 

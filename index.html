@@ -13,6 +13,8 @@
       var max_price = 0;
       var min_price = 99999999;
 
+      var bitstamp_max_price = 0;
+      var bitstamp_min_price = 99999999;
       $(function() {
         $.getJSON('http://j96.me:8888',function(json) {
 
@@ -43,6 +45,9 @@
         var is_max = false;
         var is_min = false;
         var is_large_amount = false;
+        
+        var is_bitstamp_max = false;
+        var is_bitstamp_min = false;
 
         if(max_price < parseInt(json.price))
         {
@@ -58,10 +63,22 @@
 
         if(parseInt(json.last_qty) >= 10)
           is_large_amount = true;
+        
+        if(bitstamp_max_price < parseFloat(json.bitstamp))
+        {
+          is_bitstamp_max = true;
+          bitstamp_max_price = parseFloat(json.bitstamp);
+        }
+        
+        if(bitstamp_min_price > parseFloat(json.bitstamp))
+        {
+          is_bitstamp_min = true;
+          bitstamp_min_price = parseFloat(json.bitstamp);
+        }
 
         return '<tr id="' + json.site + '"><td id="time">' + moment.unix(json.time).format('HH:mm') + '</td>' +
           '<td id="price" class="' + (is_max?'max':(is_min?'min':'')) + '">' + numeral(json.price).format('0,0') + ' (' + json.site.slice(0,1).toUpperCase() + ')' + (is_max?'↑':(is_min?'↓':'')) + '</td>' +
-          '<td id="bitstamp">' + json.bitstamp + '</td>' +
+          '<td id="bitstamp" class="' + (is_bitstamp_max?'max':(is_bitstamp_min?'min':'')) + '">' + depth_style(json.bitstamp, 2) + ' ' + (is_bitstamp_max?'↑':(is_bitstamp_min?'↓':'')) + '</td>' +
           '<td id="volume" class="' + (is_large_amount?'large_amount':'') + '">' + depth_style(json.last_qty, 2) + '</td>';
       }
       function log(str) {
@@ -95,6 +112,7 @@
     <style>
       body {
         font-family: Tahoma, Geneva, sans-serif;
+        
         background-color: black;
         color: white;
         margin: 0px;
@@ -106,6 +124,7 @@
         width: 100%;
         border: 0px;
         border-collapse:collapse;
+        font-size: 15px;
       }
 
       #min_max tr td {
@@ -126,6 +145,8 @@
       }
       table #bitstamp {
         width: 20%;
+        text-align: left;
+        padding-left: 3%;
       }
       table #volume {
         padding-right: 4%;
@@ -170,7 +191,7 @@
         <tr>
           <td>Time</td>
           <td id="price">Last Price</td>
-          <td>Bitstamp</td>
+          <td id="bitstamp">Bitstamp</td>
           <td id="volume">Qty</td>
         </tr>
       </thead>
