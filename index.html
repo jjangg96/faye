@@ -3,12 +3,14 @@
     <title>Hello, Korea!</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">    
+    <link rel="stylesheet" type="text/css" href="index.css">
+    <script type="text/javascript" src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="underscore.js"></script>
     <script type="text/javascript" src="moment-with-langs.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/numeral.js/1.4.5/numeral.min.js"></script>
     <script type="text/javascript" src="http://j96.me:8888/faye/client.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-
+    <script type="text/javascript" src="chart_data.js"></script>
     <script type="text/javascript">
       var max_price = 0;
       var min_price = 99999999;
@@ -30,7 +32,11 @@
         });
 
         var client = new Faye.Client('http://j96.me:8888/faye');
-        client.subscribe('/trade', function(json){ addRow(json.trade, true); });
+        client.subscribe('/trade', function(json){ 
+          console.log('added');
+          addRow(json.trade, true); 
+          add_to_olhc({'t': parseInt(json.trade.time), 'p': parseFloat(json.trade.price), 'v': parseFloat(json.trade.last_qty) });
+        });
         client.subscribe('/min', function(json){ $('#min').text(json.price); });
         client.subscribe('/max', function(json){ $('#max').text(json.price); });
       });
@@ -111,71 +117,10 @@
 
       };
     </script>
-    <style>
-      body {
-        font-family: Tahoma, Geneva, sans-serif;
-        
-        background-color: black;
-        color: white;
-        margin: 0px;
-        padding: 0px;
-      }
-      table {
-        margin: 0px;
-        padding: 0px;
-        width: 100%;
-        border: 0px;
-        border-collapse:collapse;
-        font-size: 15px;
-      }
-
-      #min_max tr td {
-        border: 1px solid black;
-        background-color: gray;
-      }
-
-      table td {
-        text-align: center;
-      }
-      table #time {
-        width: 20%;
-      }
-      table #price {
-        width: 40%;
-        text-align: left;
-        padding-left: 10%;
-      }
-      table #bitstamp {
-        width: 20%;
-        text-align: left;
-        padding-left: 3%;
-      }
-      table #volume {
-        padding-right: 4%;
-        text-align: right;
-      }
-
-      .zero {
-        color: gray;
-      }
-      .max {
-        color: #72bf44;
-
-      }
-      .min {
-        color: red;
-      }
-      .large_amount {
-        color: red;
-        font-weight: bold;
-      }
-
-      .green {
-        background-color: #72bf44;
-      }
-    </style>
+    
   </head>
   <body>
+    <script type="text/javascript" src="chart.js"></script>
     <table id="min_max">
       <thead>
         <tr>

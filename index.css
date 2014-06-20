@@ -1,0 +1,97 @@
+body {
+  font-family: Tahoma, Geneva, sans-serif;
+
+  background-color: black;
+  color: white;
+  margin: 0px;
+  padding: 0px;
+}
+table {
+  margin: 0px;
+  padding: 0px;
+  width: 100%;
+  border: 0px;
+  border-collapse:collapse;
+  font-size: 15px;
+}
+
+#min_max tr td {
+  border: 1px solid black;
+  background-color: gray;
+}
+
+table td {
+  text-align: center;
+}
+table #time {
+  width: 20%;
+}
+table #price {
+  width: 40%;
+  text-align: left;
+  padding-left: 10%;
+}
+table #bitstamp {
+  width: 20%;
+  text-align: left;
+  padding-left: 3%;
+}
+table #volume {
+  padding-right: 4%;
+  text-align: right;
+}
+
+.zero {
+  color: gray;
+}
+.max {
+  color: #72bf44;
+
+}
+.min {
+  color: red;
+}
+.large_amount {
+  color: red;
+  font-weight: bold;
+}
+
+.green {
+  background-color: #72bf44;
+}
+
+
+
+.axis line,
+.axis path {
+  fill: none;
+  stroke: #fff;
+  shape-rendering: crispEdges;
+}
+
+.arrow {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+.outer,
+.inner {
+  shape-rendering: crispEdges;
+}
+
+.outer {
+  fill: none;
+  stroke: #fff;
+}
+
+.inner {
+  fill: #ccc;
+  stroke: #fff;
+  stroke-dasharray: 3, 4;
+}
+
+.chart {
+  color: #fff;
+  font: 10px sans-serif;
+  fill: #fff;
+}

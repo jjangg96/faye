@@ -4,7 +4,8 @@ var REDIS_ADDR = '127.0.0.1',
 
 var faye = require('./server.js'),
     redis_server = require("redis"),
-    redis = redis_server.createClient(6379, REDIS_ADDR, null);
+    redis = redis_server.createClient(6379, REDIS_ADDR, null),
+    url = require('url');
 
 var max = 0,
     min = 9999999,
@@ -45,11 +46,29 @@ function notice(type, price) {
 
 var http = require('http');
 var server = http.createServer(function(request, http_response) {
-  redis.lrange([REDIS_KEY, 0, REDIS_LIST_SIZE-1], function(err, response){
-    http_response.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin':'*'});
-    var json = {'history' : JSON.parse('[' + response + ']'), 'max' : max, 'min' : min};
-    http_response.end(JSON.stringify(json));
-  });
+  
+  var path = url.parse(request.url).path;
+  
+  if(path == '/chart')
+  {
+    redis.lrange([REDIS_KEY, 0, REDIS_LIST_SIZE*100-1], function(err, response){
+      http_response.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin':'*'});
+      http_response.end(JSON.stringify(JSON.parse('[' + response + ']')));
+    });
+  }
+  else if(path == '/')
+  {
+    redis.lrange([REDIS_KEY, 0, REDIS_LIST_SIZE-1], function(err, response){
+      http_response.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin':'*'});
+      var json = {'history' : JSON.parse('[' + response + ']'), 'max' : max, 'min' : min};
+      http_response.end(JSON.stringify(json));
+    });
+  }
+  else
+  {
+    http_response.writeHead(200, {'Content-Type': 'text/plain', 'Access-Control-Allow-Origin':'*'});
+    http_response.end('I\'m alive');
+  }
 });
 
 
@@ -60,6 +79,7 @@ faye.start(server, function(clientId, channel, data) {
   if(channel == '/trade') {
     //store publish data
     redis.rpush(REDIS_KEY, JSON.stringify(data.trade), function(err, response) {
+      /*
       if(err)
         console.log('[' + new Date() + '][RedisErr] ' + err);
       else
@@ -69,6 +89,7 @@ faye.start(server, function(clientId, channel, data) {
           else if(response > REDIS_LIST_SIZE)
             redis.lpop([REDIS_KEY], function(err, response){});
         });
+      */
     });
 
     update_min_max(data);
