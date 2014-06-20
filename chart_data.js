@@ -46,7 +46,7 @@ function getOldOLHC(count, callback) {
 function getOLHC(count, callback) {
   $.ajax({
     type:'GET',
-    url:'http://localhost:8888/chart',
+    url:'http://j96.me:8888/chart',
     success:function(json){
       for(i in json)
       {
