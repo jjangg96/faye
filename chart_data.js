@@ -48,6 +48,7 @@ function getOLHC(count, callback) {
     type:'GET',
     url:'http://j96.me:8888/chart',
     success:function(json){
+      json = _.sortBy(json, function(item) { return item.time });
       for(i in json)
       {
         var item = json[i];
