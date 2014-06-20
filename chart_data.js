@@ -1,7 +1,7 @@
 var oldest_timestamp;
 var lastest_timestamp;
 var olhc_list = [];
-var graph_type = 60; // second
+var graph_type = 60 * 15; // second
 
 getOLHC(0, function() { set_size(document.body.clientWidth, 150); init(); });
 
