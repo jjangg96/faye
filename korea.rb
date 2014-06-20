@@ -5,6 +5,7 @@ require 'nokogiri'
 require 'faye'
 require 'eventmachine'
 
+@is_first = true
 @replacements = [
   [ "KRW" , ""],
   [ "BTC" , ""],
@@ -67,14 +68,16 @@ def xcoin
       end 
 
       bitstamp = bitstamp_price
+
+      if @is_first == false
+        text = "%s\t%s(%s)\t%.2f\t%s\n" % [Time.at(time).strftime(%"%H:%M"), show_price(last_price), bitstamp.to_s, last_qty, "xcoin"]
+        puts text;
+
+        broadcast("/trade", {'trade' => {'time' => time, 'price' => last_price, 'bitstamp' => bitstamp, 'last_qty' => last_qty, 'site' => 'xcoin'}})
+
+        read_price(last_price, '엑스꼬인')
+      end
       
-      text = "%s\t%s(%s)\t%.2f\t%s\n" % [Time.at(time).strftime(%"%H:%M"), show_price(last_price), bitstamp.to_s, last_qty, "xcoin"]
-      puts text;
-
-      broadcast("/trade", {'trade' => {'time' => time, 'price' => last_price, 'bitstamp' => bitstamp, 'last_qty' => last_qty, 'site' => 'xcoin'}})
-
-      read_price(last_price, '엑스꼬인')
-
       if json_array.first == item
         @xcoin_firstValue = currentTime;
       end
@@ -107,11 +110,12 @@ def korbit
 
       bitstamp = bitstamp_price
       
-      text = "%s\t%s(%s)\t%.2f\t%s\n" % [Time.at(time).strftime(%"%H:%M"), show_price(last_price), bitstamp.to_s, last_qty, "korbit"]
-      puts text;
+      if @is_first == false
+        text = "%s\t%s(%s)\t%.2f\t%s\n" % [Time.at(time).strftime(%"%H:%M"), show_price(last_price), bitstamp.to_s, last_qty, "korbit"]
+        puts text;
 
-      broadcast("/trade", {'trade' => {'time' => time, 'price' => last_price, 'bitstamp' => bitstamp, 'last_qty' => last_qty, 'site' => 'korbit'}})
-
+        broadcast("/trade", {'trade' => {'time' => time, 'price' => last_price, 'bitstamp' => bitstamp, 'last_qty' => last_qty, 'site' => 'korbit'}})
+      end
       read_price(last_price, '꼬빗')
 
       if json_array.first == item
@@ -155,7 +159,7 @@ printf "시간\t" + "BTC" + "\t\t수량\t사이트\n"
 while(true)
   xcoin
   korbit
-
+  @is_first = false
   sleep(3)
 end
 
