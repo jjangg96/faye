@@ -39,6 +39,8 @@
         $('#history tbody').prepend(makeRow(json));  
         if(can_flash)
           flash($('#history tbody tr:first'), 'green');
+        
+        document.title = numeral(json.price).format('0,0') + '(' + json.bitstamp + ')';
       }
 
       function makeRow(json) {
