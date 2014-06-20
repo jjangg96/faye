@@ -110,3 +110,32 @@ line.current_volume {
   stroke: white;
   stroke-width: 1;
 }
+
+
+tspan.timestamp {
+
+}
+
+tspan.open {
+}
+
+tspan.high {
+
+}
+
+tspan.low {
+
+}
+
+tspan.close {
+
+}
+
+tspan.volume {
+
+}
+
+.overlay {
+  fill: none;
+  pointer-events: all;
+}
