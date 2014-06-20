@@ -58,7 +58,7 @@ var server = http.createServer(function(request, http_response) {
   }
   else if(path == '/')
   {
-    redis.lrange([REDIS_KEY, 0, REDIS_LIST_SIZE-1], function(err, response){
+    redis.lrange([REDIS_KEY, REDIS_LIST_SIZE, -1], function(err, response){
       http_response.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin':'*'});
       var json = {'history' : JSON.parse('[' + response + ']'), 'max' : max, 'min' : min};
       http_response.end(JSON.stringify(json));
