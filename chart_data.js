@@ -23,10 +23,6 @@ function add_to_olhc(json) {
     var new_json = {'t': key, 'o':json.p,'l':json.p, 'h':json.p, 'c':json.p, 'v':json.v};
     olhc_list.push(new_json);
   }
-
-  refresh(0);
-
-  //console.log('add : ' +  JSON.stringify(json) + ', new : ' +  JSON.stringify(_.last(olhc_list)));
 }
 
 function updateOldestTimestamp(oldest) {
@@ -49,12 +45,10 @@ function getOLHC(count, callback) {
     url:'http://j96.me:8888/chart',
     success:function(json){
       json = _.sortBy(json, function(item) { return item.time });
-      for(i in json)
-      {
-        var item = json[i];
+      _.each(json, function(item) {
         add_to_olhc({'t': parseInt(item.time), 'p': parseFloat(item.price), 'v': parseFloat(item.last_qty) });
-      }
-      
+      });
+      refresh(0);
       callback();
     },
     error:function(request,status,error){ console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error); }
