@@ -85,7 +85,7 @@ def xcoin
     @xcoin_realFirstValue = @xcoin_firstValue;
 
   rescue Exception => exception
-    puts "#{exception.message}\n#{exception.backtrace.join("\n")}"
+    #puts "#{exception.message}\n#{exception.backtrace.join("\n")}"
 end
 end
 
@@ -125,7 +125,7 @@ def korbit
     @korbit_realFirstValue = @korbit_firstValue;
 
   rescue Exception => exception
-    puts "#{exception.message}\n#{exception.backtrace.join("\n")}"
+    #puts "#{exception.message}\n#{exception.backtrace.join("\n")}"
 end
 end
 
@@ -157,9 +157,12 @@ end
 printf "시간\t" + "BTC" + "\t\t수량\t사이트\n"
 
 while(true)
-  xcoin
-  korbit
-  @is_first = false
-  sleep(3)
+  begin
+    xcoin
+    korbit
+    @is_first = false
+    sleep(3)
+  rescue Exception => exception
+  end
 end
 
