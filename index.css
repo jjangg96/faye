@@ -142,12 +142,12 @@ tspan.volume {
 
 line.indicator_x {
   stroke: white;
-  stroke-width: 2;
+  stroke-width: 0.5;
 }
 
 line.indicator_y {
   stroke: white;
-  stroke-width: 2;
+  stroke-width: 0.5;
 }
 
 rect.price_indicator {
