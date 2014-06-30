@@ -3,7 +3,15 @@ var lastest_timestamp;
 var olhc_list = [];
 var graph_type = 60 * 15; // second
 
-getOLHC(0, function() { set_size(document.body.clientWidth, document.body.clientHeight/4); init(); });
+getOLHC(0, function() { 
+  
+  set_size(document.body.clientWidth, document.body.clientHeight/4); 
+  init(); 
+  d3.select(window).on('resize', function() {
+    set_size(document.body.clientWidth, document.body.clientHeight/4); 
+    init(); 
+  }); 
+});
 
 function add_to_olhc(json) {
   //{"t":1403252441,"p":585,"v":4};
