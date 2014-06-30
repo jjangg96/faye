@@ -4,8 +4,6 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">    
     <meta property="og:title" content="BTCKorea.org">
-    <meta property="og:description" content="국내 비트코인 실시간 차트 및 거래 정보">
-    <meta name="description" content="국내 비트코인 실시간 차트 및 거래 정보">
     <meta property="og:image" content="https://dl.dropboxusercontent.com/u/5736215/btckorea.png">
     <meta property="og:site_name" content="BTCKorea.org">
     <meta property="og:url" content="http://BTCKorea.org">
@@ -54,6 +52,13 @@
           flash($('#history tbody tr:first'), 'green');
         
         document.title = numeral(json.price).format('0,0') + '(' + json.bitstamp + ')';
+        
+        
+        $('meta[name=description]').remove();
+        $('meta[property="og:description"]').remove();
+        $('head').append('<meta name="description" content="비트코인 국내 거래소 실시간 차트 및 거래 기록. 최종가격 : ' + numeral(json.price).format('0,0') + '(' + json.site.toUpperCase() + '), Bitstamp : ' + json.bitstamp + '" >');
+        $('head').append('<meta property="og:description" content="비트코인 국내 거래소 실시간 차트 및 거래 기록. 최종가격 : ' + numeral(json.price).format('0,0') + '(' + json.site.toUpperCase() + '), Bitstamp : ' + json.bitstamp + '" >');
+        
       }
 
       function makeRow(json) {
