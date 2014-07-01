@@ -180,3 +180,32 @@ div.footer {
   text-align: center; 
   font-size:11px;
 }
+
+/* phone */
+@media only screen and (max-device-width : 480px) {
+  img.top_banner { 
+    max-width: 100%; 
+    display: block;
+    margin-left: auto;
+    margin-right: auto; 
+  }
+}
+
+/* tablet */
+@media only screen and (min-width:321px) and (max-width:1024px) {
+  img.top_banner { 
+    max-height: 50px; 
+    display: block;
+    margin-left: auto;
+    margin-right: auto; 
+  }
+}
+
+@media only screen and (min-width:1025px) {
+  img.top_banner { 
+    max-height: 75px; 
+    display: block;
+    margin-left: auto;
+    margin-right: auto; 
+  }
+}
