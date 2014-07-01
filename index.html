@@ -1,13 +1,16 @@
 <html>
-  <head>
+  <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# website: http://ogp.me/ns/website#">
     <title>Hello, Korea!</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">    
-    <meta property="og:title" content="BTCKorea.org">
+
+    <meta property="og:title" content="비트코인 국내 거래소 실시간 차트 및 거래 기록">
     <meta property="og:image" content="https://dl.dropboxusercontent.com/u/5736215/btckorea.png">
-    <meta property="og:site_name" content="BTCKorea.org">
-    <meta property="og:url" content="http://BTCKorea.org">
+    <meta property="og:url" content="http://www.btckorea.org">
+    <meta property="og:type"   content="website" /> 
+    <meta property="fb:app_id" content="683455885058190" /> 
+
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black" />
@@ -21,7 +24,7 @@
 
     <link rel="stylesheet" type="text/css" href="res/index.css">
     <link rel="stylesheet" type="text/css" href="res/addtohomescreen.css">
-    
+
     <script type="text/javascript" src="res/addtohomescreen.js"></script>
     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.4.8/d3.min.js" charset="utf-8"></script>
     <script type="text/javascript" src="res/underscore.js"></script>
@@ -44,7 +47,7 @@
         fjs.parentNode.insertBefore(js, fjs);
       }(document, 'script', 'facebook-jssdk'));
     </script>
-    
+
     <div class="fb-like" data-href="http://www.btckorea.org" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true" data-colorscheme="dark"  align="right"></div>
     <table id="min_max">
       <thead>
