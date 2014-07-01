@@ -165,3 +165,18 @@ svg {
   user-select:none;
   -webkit-tap-highlight-color:rgba(0,0,0,0);
 }
+
+div.fb-like {
+  margin-bottom: 10px;
+}
+
+a:link {
+  color: white;
+}
+
+div.footer {
+  margin:10px 0px 0px 0px;
+  padding: 0px 7.5px; 
+  text-align: center; 
+  font-size:11px;
+}

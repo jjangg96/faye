@@ -2,137 +2,50 @@
   <head>
     <title>Hello, Korea!</title>
     <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">    
     <meta property="og:title" content="BTCKorea.org">
     <meta property="og:image" content="https://dl.dropboxusercontent.com/u/5736215/btckorea.png">
     <meta property="og:site_name" content="BTCKorea.org">
     <meta property="og:url" content="http://BTCKorea.org">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <meta name="apple-mobile-web-app-title" content="실시간 한국거래소" />
+
+    <link rel="icon" type="image/png" href="res/favicon.png" /> 
+    <link rel="apple-touch-icon" href="res/touch-icon-iphone.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="res/touch-icon-ipad.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="res/touch-icon-iphone-retina.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="res/touch-icon-ipad-retina.png">
+
+    <link rel="stylesheet" type="text/css" href="res/index.css">
+    <link rel="stylesheet" type="text/css" href="res/addtohomescreen.css">
     
-    <link rel="stylesheet" type="text/css" href="index.css">
+    <script type="text/javascript" src="res/addtohomescreen.js"></script>
     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.4.8/d3.min.js" charset="utf-8"></script>
-    <script type="text/javascript" src="underscore.js"></script>
-    <script type="text/javascript" src="moment-with-langs.min.js"></script>
+    <script type="text/javascript" src="res/underscore.js"></script>
+    <script type="text/javascript" src="res/moment-with-langs.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/numeral.js/1.4.5/numeral.min.js"></script>
     <script type="text/javascript" src="http://j96.me:8888/faye/client.js"></script>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-    <script type="text/javascript" src="chart_data.js"></script>
-    <script type="text/javascript">
-      var max_price = 0;
-      var min_price = 99999999;
-
-      var bitstamp_max_price = 0;
-      var bitstamp_min_price = 99999999;
-      $(function() {
-        
-        $.getJSON('http://j96.me:8888',function(json) {
-          
-          var history = json.history
-          history = _.sortBy(history, function(item) { return item.time });
-
-          for(i in history)
-            addRow(history[i], false);  
-
-          $('#min_max tbody tr:last').append('<td id="min">' + json['min'] + '</td><td id="max">' + json['max'] + '</td>');
-
-        });
-
-        var client = new Faye.Client('http://j96.me:8888/faye');
-        client.subscribe('/trade', function(json){ 
-          addRow(json.trade, true); 
-          add_to_olhc({'t': parseInt(json.trade.time), 'p': parseFloat(json.trade.price), 'v': parseFloat(json.trade.last_qty) });
-          refresh(0);
-        });
-        client.subscribe('/min', function(json){ $('#min').text(json.price); });
-        client.subscribe('/max', function(json){ $('#max').text(json.price); });
-      });
-
-      function addRow(json, can_flash) {
-        $('#history tbody').prepend(makeRow(json));  
-        if(can_flash)
-          flash($('#history tbody tr:first'), 'green');
-        
-        document.title = numeral(json.price).format('0,0') + '(' + json.bitstamp + ')';
-        
-        
-        $('meta[name=description]').remove();
-        $('meta[property="og:description"]').remove();
-        $('head').append('<meta name="description" content="비트코인 국내 거래소 실시간 차트 및 거래 기록. 최종가격 : ' + numeral(json.price).format('0,0') + '(' + json.site.toUpperCase() + '), Bitstamp : ' + json.bitstamp + '" >');
-        $('head').append('<meta property="og:description" content="비트코인 국내 거래소 실시간 차트 및 거래 기록. 최종가격 : ' + numeral(json.price).format('0,0') + '(' + json.site.toUpperCase() + '), Bitstamp : ' + json.bitstamp + '" >');
-        
-      }
-
-      function makeRow(json) {
-        var is_max = false;
-        var is_min = false;
-        var is_large_amount = false;
-        
-        var is_bitstamp_max = false;
-        var is_bitstamp_min = false;
-
-        if(max_price < parseInt(json.price))
-        {
-          is_max = true;
-          max_price = parseInt(json.price);
-        }
-
-        if(min_price > parseInt(json.price))
-        {
-          is_min = true;
-          min_price = parseInt(json.price);
-        }
-
-        if(parseInt(json.last_qty) >= 10)
-          is_large_amount = true;
-        
-        if(bitstamp_max_price < parseFloat(json.bitstamp))
-        {
-          is_bitstamp_max = true;
-          bitstamp_max_price = parseFloat(json.bitstamp);
-        }
-        
-        if(bitstamp_min_price > parseFloat(json.bitstamp))
-        {
-          is_bitstamp_min = true;
-          bitstamp_min_price = parseFloat(json.bitstamp);
-        }
-
-        return '<tr id="' + json.site + '"><td id="time">' + moment.unix(json.time).format('HH:mm') + '</td>' +
-          '<td id="price" class="' + (is_max?'max':(is_min?'min':'')) + '">' + numeral(json.price).format('0,0') + ' (' + json.site.slice(0,1).toUpperCase() + ')' + (is_max?'↑':(is_min?'↓':'')) + '</td>' +
-          '<td id="bitstamp" class="' + (is_bitstamp_max?'max':(is_bitstamp_min?'min':'')) + '">' + depth_style(json.bitstamp, 2) + ' ' + (is_bitstamp_max?'↑':(is_bitstamp_min?'↓':'')) + '</td>' +
-          '<td id="volume" class="' + (is_large_amount?'large_amount':'') + '">' + depth_style(json.last_qty, 2) + '</td>';
-      }
-      function log(str) {
-        //$('#log').val(str + '\n' + $('#log').val());
-      };
-
-      zero = ["", "0", "00", "000", "0000"];
-      function depth_style(num, digit) {
-        var d = parseFloat(num).toFixed(digit);
-        for (var n = d.length, i = 1; i < digit;)
-          if (d.charAt(n - i) == "0")
-            i++;
-          else {
-            if (i == 1)
-              return d;
-            break
-          }
-        return d.slice(0, n - i + 1) + '<span class="zero">' + zero[i - 1] + "</span>"
-      }
-
-      function flash(element, type) {
-        if (type == '')
-          return;
-        $(element).addClass(type);
-        setTimeout(function () {
-          $(element).removeClass(type);
-        }, 1000);
-
-      };
-    </script>
-    
+    <script type="text/javascript" src="res/chart_data.js"></script>
+    <script type="text/javascript" src="res/realtime-table.js"></script>
   </head>
   <body>
-    <script type="text/javascript" src="chart.js"></script>
+    <script type="text/javascript" src="res/chart.js"></script>
+    <div id="fb-root"></div>
+    <script>
+      (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = "//connect.facebook.net/ko_KR/sdk.js#xfbml=1&appId=683455885058190&version=v2.0";
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+    </script>
+    
+    <div class="fb-like" data-href="http://www.btckorea.org" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true" data-colorscheme="dark"  align="right"></div>
     <table id="min_max">
       <thead>
         <tr>
@@ -161,5 +74,9 @@
 
     </table>
     <!--<textarea id="log" style="width:700;height:300;"></textarea>-->
+
+    <div class="footer">
+      Copyright 2014 <a href="http://www.bitple.co.kr" target="_blank">Bitple</a> <a href="mailto:jjangg96@bitple.com">(jjangg96)</a>
+    </div>
   </body>
 </html>
