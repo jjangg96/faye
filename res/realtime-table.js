@@ -44,8 +44,8 @@ function addRow(json, can_flash) {
 
   $('meta[name=description]').remove();
   $('meta[property="og:description"]').remove();
-  $('head').append('<meta name="description" content="비트코인 국내 거래소 실시간 차트 및 거래 기록. 최종가격 : ' + numeral(json.price).format('0,0') + '(' + json.site.toUpperCase() + '), Bitstamp : ' + json.bitstamp + '" >');
-  $('head').append('<meta property="og:description" content="비트코인 국내 거래소 실시간 차트 및 거래 기록. 최종가격 : ' + numeral(json.price).format('0,0') + '(' + json.site.toUpperCase() + '), Bitstamp : ' + json.bitstamp + '" >');
+  $('head').append('<meta name="description" content="최근 국내에서 거래된 비트코인 가격과 실시간 차트를 볼 수 있습니다. 최종가격 : ' + numeral(json.price).format('0,0') + '(' + json.site.toUpperCase() + '), Bitstamp : ' + json.bitstamp + '" >');
+  $('head').append('<meta property="og:description" content="최근 국내에서 거래된 비트코인 가격과 실시간 차트를 볼 수 있습니다. 최종가격 : ' + numeral(json.price).format('0,0') + '(' + json.site.toUpperCase() + '), Bitstamp : ' + json.bitstamp + '" >');
 
 }
 
