@@ -4,6 +4,10 @@ var min_price = 99999999;
 var bitstamp_max_price = 0;
 var bitstamp_min_price = 99999999;
 $(function() {
+  
+  $('#info-btn').popover();
+
+  
   addToHomescreen({
     startDelay: 60,
     skipFirstVisit: true,
@@ -85,7 +89,7 @@ function makeRow(json) {
   }
 
   return '<tr id="' + json.site + '"><td id="time">' + moment.unix(json.time).format('HH:mm') + '</td>' +
-    '<td id="price" class="' + (is_max?'max':(is_min?'min':'')) + '">' + numeral(json.price).format('0,0') + ' (' + json.site.slice(0,1).toUpperCase() + ')' + (is_max?'↑':(is_min?'↓':'')) + '</td>' +
+    '<td id="price" class="' + (is_max?'max':(is_min?'min':'')) + '">' + numeral(json.price).format('0,0') + ' <abbr title="' + json.site.toUpperCase() + '">(' + json.site.slice(0,1).toUpperCase() + ')</abbr>' + (is_max?'↑':(is_min?'↓':'')) + '</td>' +
     '<td id="bitstamp" class="' + (is_bitstamp_max?'max':(is_bitstamp_min?'min':'')) + '">' + depth_style(json.bitstamp, 2) + ' ' + (is_bitstamp_max?'↑':(is_bitstamp_min?'↓':'')) + '</td>' +
     '<td id="volume" class="' + (is_large_amount?'large_amount':'') + '">' + depth_style(json.last_qty, 2) + '</td>';
 }
@@ -116,3 +120,5 @@ function flash(element, type) {
   }, 1000);
 
 };
+
+

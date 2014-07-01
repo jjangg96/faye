@@ -1,10 +1,11 @@
 body {
   font-family: Tahoma, Geneva, sans-serif;
 
-  background-color: black;
-  color: white;
+  background-color: black !important;
+  color: white !important;
   margin: 0px;
   padding: 0px;
+
 }
 table {
   margin: 0px;
@@ -112,29 +113,6 @@ line.current_volume {
 }
 
 
-tspan.timestamp {
-
-}
-
-tspan.open {
-}
-
-tspan.high {
-
-}
-
-tspan.low {
-
-}
-
-tspan.close {
-
-}
-
-tspan.volume {
-
-}
-
 .overlay {
   fill: none;
   pointer-events: all;
@@ -181,31 +159,26 @@ div.footer {
   font-size:11px;
 }
 
-/* phone */
-@media only screen and (max-device-width : 480px) {
-  img.top_banner { 
-    max-width: 100%; 
-    display: block;
-    margin-left: auto;
-    margin-right: auto; 
-  }
+
+#info-btn {
+  float: left !important;
+  margin-left: 5px;
+  margin-right: 5px;
 }
 
-/* tablet */
-@media only screen and (min-width:321px) and (max-width:1024px) {
-  img.top_banner { 
-    max-height: 50px; 
-    display: block;
-    margin-left: auto;
-    margin-right: auto; 
-  }
+.popover-title{
+  background: tomato;
+
+}
+.popover {
+  background: tomato;
 }
 
-@media only screen and (min-width:1025px) {
-  img.top_banner { 
-    max-height: 60px; 
-    display: block;
-    margin-left: auto;
-    margin-right: auto; 
-  }
+
+/*BOOTSTRAP*/
+
+.table-hover > tbody > tr:hover > td,
+.table-hover > tbody > tr:hover > th {
+  background-color: #4f4f4f;
 }
+
