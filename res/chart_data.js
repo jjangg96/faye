@@ -50,7 +50,7 @@ function getOldOLHC(count, callback) {
 function getOLHC(count, callback) {
   $.ajax({
     type:'GET',
-    url:'http://j96.me:8888/chart',
+    url:'http://www.btckorea.org:8888/chart',
     success:function(json){
       json = _.sortBy(json, function(item) { return item.time });
       _.each(json, function(item) {
