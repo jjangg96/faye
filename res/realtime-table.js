@@ -3,11 +3,20 @@ var min_price = 99999999;
 
 var bitstamp_max_price = 0;
 var bitstamp_min_price = 99999999;
+var last_alive_tick = new Date().getTime();
 $(function() {
-  
+  //popover setup
   $('#info-btn').popover();
 
+  //setup timer to get new informations
+  setInterval(function(){
+    if(last_alive_tick + 60*1000 < new Date().getTime())
+      window.location.reload(); 
+    
+    last_alive_tick = new Date().getTime();
+  }, 2*1000);
   
+  //setup add to homescreen
   addToHomescreen({
     startDelay: 60,
     skipFirstVisit: true,
@@ -15,7 +24,7 @@ $(function() {
     lifespan: 0,
     icon: false
   });
-  
+
   $.getJSON('http://j96.me:8888',function(json) {
 
     var history = json.history
