@@ -94,13 +94,20 @@ table #volume {
 }
 
 rect.green {
+  fill: rgb(76, 214, 15);
+  
+/*
   fill: black;
+*/  
   stroke-width:1;
   stroke: rgb(76, 214, 15);
+
 }
 
 rect.red {
   fill: rgb(224,31,38);
+  stroke-width:1;
+  stroke: rgb(224,31,38);
 }
 
 line.current_volume {
@@ -234,7 +241,7 @@ a:link {
 }
 
 .table > tbody > tr > td {
-  border-top: 1px solid #505050;
+  border-top: 1px solid #303030;
 }
 
 .popover-title{
