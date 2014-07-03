@@ -1,11 +1,8 @@
 body {
   font-family: Tahoma, Geneva, sans-serif;
-
   background-color: black !important;
   color: white !important;
-  margin: 0px;
-  padding: 0px;
-
+  
 }
 table {
   margin: 0px;
@@ -13,7 +10,7 @@ table {
   width: 100%;
   border: 0px;
   border-collapse:collapse;
-  font-size: 15px;
+  font-size: 14px;
 }
 
 #min_max tr td {
@@ -53,15 +50,14 @@ table #volume {
   color: red;
 }
 .large_amount {
-  color: red;
+  color: green;
   font-weight: bold;
 }
-
 .green {
   background-color: #72bf44;
 }
 
-
+/*Chart*/
 
 .axis line,
 .axis path {
@@ -112,7 +108,6 @@ line.current_volume {
   stroke-width: 1;
 }
 
-
 .overlay {
   fill: none;
   pointer-events: all;
@@ -144,26 +139,96 @@ svg {
   -webkit-tap-highlight-color:rgba(0,0,0,0);
 }
 
-div.fb {
-  margin-bottom: 10px;
+
+
+/*HTML*/
+
+
+
+
+@media only screen and (max-device-width : 768px) {
+  #info-btn {
+    right: 0px;
+    margin-left: 3px;
+    margin-right: 3px;
+    height: 20px;
+    width: 41;
+  }
+
+  div.row {
+    position: relative;
+  }
+
+  div.up {
+    position: absolute;
+    top: 0px;
+    display: block;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  div.down {
+    padding: 0px 0px 0px 0px !important;
+  }
+  
+  
+  div.info {
+    padding: 0px 0px 3px 0px !important;
+  }
 }
 
+@media only screen and (min-device-width : 768px) {
+  #info-modal {
+    margin-bottom: 4px;
+  }
+  
+  div.row {
+    position: relative;
+  }
+  div.left {
+    padding-right: 140px !important;  
+  }
+  div.right {
+    position: absolute;
+    
+    right: 0px;
+    width: 140px;
+    padding-left: 0px !important;
+  }
+
+  info-modal {
+    margin-bottom: 5px; 
+  }
+
+}
+
+div.footer {
+  bottom: 0px;
+  margin:10px 0px 0px 0px; 
+  text-align: center; 
+  font-size:12px;
+}
+
+
+.modal-title {
+  color: black;
+}
+
+.modal-body {
+  color: black;
+}
+/*BOOTSTRAP*/
 a:link {
   color: white;
 }
 
-div.footer {
-  margin:10px 0px 0px 0px;
-  padding: 0px 7.5px; 
-  text-align: center; 
-  font-size:11px;
+.table-hover > tbody > tr:hover > td,
+.table-hover > tbody > tr:hover > th {
+  background-color: #4f4f4f;
 }
 
-
-#info-btn {
-  float: left !important;
-  margin-left: 5px;
-  margin-right: 5px;
+.table > tbody > tr > td {
+  border-top: 1px solid #505050;
 }
 
 .popover-title{
@@ -174,11 +239,12 @@ div.footer {
   background: tomato;
 }
 
+.container {
+  margin: auto;
+  padding: 0px;
+}
 
-/*BOOTSTRAP*/
-
-.table-hover > tbody > tr:hover > td,
-.table-hover > tbody > tr:hover > th {
-  background-color: #4f4f4f;
+.row {
+  margin: 0px;
 }
 

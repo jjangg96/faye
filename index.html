@@ -1,4 +1,5 @@
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ko">
   <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# website: http://ogp.me/ns/website#">
     <title>Hello, Korea!</title>
     <!-- META-->
@@ -48,8 +49,19 @@
   </head>
 
   <body>
-    <div class="visible-xs-block"><a href="http://wp.me/P4fds6-1gR" target="_blank"><img class="center-block" src="res/bitpremiers_event.jpg" height="50"></img></a></div>
-  <!--
+    
+    
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/ko_KR/sdk.js#xfbml=1&appId=683455885058190&version=v2.0";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+
+
+    <!--
 <center>
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <ins class="adsbygoogle"
@@ -62,69 +74,104 @@ data-ad-slot="5156935109"></ins>
 </center>
 -->
 
-  <script type="text/javascript" src="res/chart.js"></script>
+    
+    <div class="container">
+      <div class="row">
+        <div class="chart">
+        </div>
+      </div>
+      <div class="row visible-xs-block">
+       <div class="col-xs-4 info">
+         <div class="fb-like" data-href="http://www.btckorea.org" data-layout="button_count" data-action="like" data-show-faces="true" data-share="true"></div>
+         
+        </div>
+        <div class="col-xs-2 col-xs-offset-6 info">
+<!--         <button type="button" class="btn btn-primary  btn-xs" id="info-btn" data-placement="down" data-toggle="popover" title="도움말" data-content="가격에 K는 Korbit, X는 Xcoin을 의미합니다. 모바일 환경에서 차트는 드래그로 이동, 더블 탭 드래그로 자세히 보기, 두 손가락으로 줌인/아웃입니다.">도움말</button> -->
+          <button type="button" class="btn btn-primary  btn-xs" id="info-modal" data-toggle="modal" data-target="#myModal">도움말!!!</button>
+        </div>
+      </div>
+      <div class="row visible-xs-block">
+        <a href="http://wp.me/P4fds6-1gR" target="_blank"><img height="50" src="/res/bitpremiers_event.jpg"></a>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12 left down">
+          <table id="min_max">
+            <thead>
+              <tr><td>최저가</td><td>최고가</td></tr>
+            </thead>
+            <tbody>
+              <tr></tr>
+            </tbody>
+          </table>
+          <table id="history" class="table table-hover table-condensed">
+            <thead>
+              <tr><td>Time</td><td id="price">Last Price</td><td id="bitstamp">Bitstamp</td><td id="volume">Qty</td></tr>
+            </thead>
+            <tbody>
+              <tr id="list">
+              </tr>
+            </tbody>
+          </table>
+        </div>
 
 
+        <div class="right up">
+          <div class="hidden-xs">
+            <button type="button" class="btn btn-primary  btn-xs" id="info-modal" data-toggle="modal" data-target="#myModal">도움말!!!</button>
 
-  <div id="fb-root"></div>
-  <script>
-    (function(d, s, id) {
-      var js, fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return;
-      js = d.createElement(s); js.id = id;
-      js.src = "//connect.facebook.net/ko_KR/sdk.js#xfbml=1&appId=683455885058190&version=v2.0";
-      fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-  </script>
+            <div class="pull_right">
+              <div class="fb-like" data-href="http://www.btckorea.org" data-layout="box_count" data-action="like" data-show-faces="true" data-share="true"></div>
+            </div>
+            <a href="http://wp.me/P4fds6-1gR" target="_blank"><img width="120" src="/res/120x600.jpg"></a>
+          </div>
+        </div>
+      </div>
 
-  <div class="fb">
-    <button type="button" class="btn btn-info btn-xs" id="info-btn" data-toggle="popover" title="도움말" data-content="가격에 K는 Korbit, X는 Xcoin을 의미합니다. 모바일 환경에서 차트는 드래그로 이동, 더블 탭 드래그로 자세히 보기, 두 손가락으로 줌인/아웃입니다.">도움말</button>
-    <div class="fb-like" data-href="http://www.btckorea.org" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true" data-colorscheme="dark"></div>
-  </div>
-  <table id="min_max">
-    <thead>
-      <tr>
-        <td>최저가</td>
-        <td>최고가</td>
-      </tr>
-    </thead>
-    <tbody>
-      <tr></tr>
-    </tbody>
-  </table>
+      <div class="col-md-12 footer">
+        <span class="glyphicon glyphicon-copyright-mark"></span> 2014 <a href="http://www.bitple.co.kr" target="_blank">Bitple</a>, <a href="mailto:jjangg96@bitple.com">jjangg96 <span class="glyphicon glyphicon-envelope"></span></a>
+      </div>
+    </div>
 
-  <table id="history" class="table table-hover">
-    <thead>
-      <tr>
-        <td>Time</td>
-        <td id="price">Last Price</td>
-        <td id="bitstamp">Bitstamp</td>
-        <td id="volume">Qty</td>
-      </tr>
-    </thead>
-    <tbody>
-      <tr id="list">
-      </tr>
-    </tbody>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4 class="modal-title">도움말</h4>
+          </div>
+          <div class="modal-body">
+            <p>가격에 K는 Korbit, X는 Xcoin을 의미합니다.</p>
+            <p>모바일에서 차트는 
+              <ul>
+                <li><b>드래그</b>로 이동</li>
+                <li><b>더블 탭 &amp; 드래그</b>로 자세히 보기</li>
+                <li><b>두 손가락 핀치</b>로 줌인/아웃</li>
+                </ul>
+            </p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!--Google Analytics  -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+                              })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
-  </table>
-  <!--<textarea id="log" style="width:700;height:300;"></textarea>-->
+      ga('create', 'UA-52437842-1', 'auto');
+      ga('require', 'displayfeatures');
+      ga('send', 'pageview');
 
-  <div class="footer">
-    <span class="glyphicon glyphicon-copyright-mark"></span> 2014 <a href="http://www.bitple.co.kr" target="_blank">Bitple</a>, <a href="mailto:jjangg96@bitple.com">jjangg96 <span class="glyphicon glyphicon-envelope"></span></a>
-  </div>
-
-  <!--Google Analytics  -->
-  <script>
-    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-                            })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-    ga('create', 'UA-52437842-1', 'auto');
-    ga('require', 'displayfeatures');
-    ga('send', 'pageview');
-
-  </script>
+    </script>
+    <script type="text/javascript" src="res/chart.js"></script>
+    
   </body>
 </html>

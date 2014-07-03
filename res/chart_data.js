@@ -5,10 +5,10 @@ var graph_type = 60 * 15; // second
 
 getOLHC(0, function() { 
   
-  set_size(document.body.clientWidth, document.body.clientHeight/3); 
+  set_size($("div.container").width(), $(window).height()/3); 
   init(); 
   d3.select(window).on('resize', function() {
-    set_size(document.body.clientWidth, document.body.clientHeight/3); 
+    set_size($("div.container").width(), $(window).height()/3); 
     init(); 
   }); 
 });
