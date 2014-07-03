@@ -5,8 +5,6 @@ var bitstamp_max_price = 0;
 var bitstamp_min_price = 99999999;
 var last_alive_tick = new Date().getTime();
 $(function() {
-  $('#info-btn').popover();
-  
   //setup timer to get new informations
   setInterval(function(){
     if(last_alive_tick + 60*1000 < new Date().getTime())

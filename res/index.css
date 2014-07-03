@@ -172,12 +172,15 @@ svg {
   }
   
   
-  div.info {
-    padding: 0px 0px 3px 0px !important;
-  }
 }
 
-@media only screen and (min-device-width : 768px) {
+@media only screen and (min-width : 321px) and (max-width : 768px) {
+  #info-btn {
+    height: 20px;
+    width: 41;
+  }
+}
+@media only screen and (min-width : 768px) {
   #info-modal {
     margin-bottom: 4px;
   }
@@ -190,7 +193,7 @@ svg {
   }
   div.right {
     position: absolute;
-    
+    top: 0px;
     right: 0px;
     width: 140px;
     padding-left: 0px !important;
@@ -202,13 +205,16 @@ svg {
 
 }
 
+div.info {
+    padding-bottom:3px !important;
+  }
+
 div.footer {
   bottom: 0px;
   margin:10px 0px 0px 0px; 
   text-align: center; 
   font-size:12px;
 }
-
 
 .modal-title {
   color: black;
@@ -248,3 +254,6 @@ a:link {
   margin: 0px;
 }
 
+.btx-xs {
+  border-radius: 2px;
+}
