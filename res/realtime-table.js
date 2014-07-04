@@ -37,8 +37,7 @@ $(function() {
   var client = new Faye.Client('http://j96.me:8888/faye');
   client.subscribe('/trade', function(json){ 
     addRow(json.trade, true); 
-    add_to_olhc({'t': parseInt(json.trade.time), 'p': parseFloat(json.trade.price), 'v': parseFloat(json.trade.last_qty) });
-    refresh(0);
+    add_to_chart(add_to_olhc({'t': parseInt(json.trade.time), 'p': parseFloat(json.trade.price), 'v': parseFloat(json.trade.last_qty) }));
   });
   client.subscribe('/min', function(json){ $('#min').text(json.price); });
   client.subscribe('/max', function(json){ $('#max').text(json.price); });

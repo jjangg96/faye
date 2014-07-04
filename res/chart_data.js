@@ -25,11 +25,14 @@ function add_to_olhc(json) {
     last.h = (last.h<p?p:last.h);
     last.l = (last.l>p?p:last.l);
     last.v += json.v;
+    
+    return false;
   }
   else
   {
     var new_json = {'t': key, 'o':json.p,'l':json.p, 'h':json.p, 'c':json.p, 'v':json.v};
     olhc_list.push(new_json);
+    return true;
   }
 }
 
@@ -56,6 +59,7 @@ function getOLHC(count, callback) {
       _.each(json, function(item) {
         add_to_olhc({'t': parseInt(item.time), 'p': parseFloat(item.price), 'v': parseFloat(item.last_qty) });
       });
+      olhc_list = _.sortBy(olhc_list, function(item) { return item.t });      
       refresh(0);
       callback();
     },
