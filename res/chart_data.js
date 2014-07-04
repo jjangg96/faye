@@ -13,11 +13,10 @@ getOLHC(0, function() {
   }); 
 });
 
-function add_to_olhc(json) {
+function add_to_last(json, last) {
   //{"t":1403252441,"p":585,"v":4};
   var key = Math.floor(json.t / graph_type) * graph_type;
 
-  var last = _.last(olhc_list);
   if(last != null && last.t == key)
   {
     var p = json.p;
@@ -25,15 +24,25 @@ function add_to_olhc(json) {
     last.h = (last.h<p?p:last.h);
     last.l = (last.l>p?p:last.l);
     last.v += json.v;
-    
-    return false;
+    return last;
   }
   else
   {
     var new_json = {'t': key, 'o':json.p,'l':json.p, 'h':json.p, 'c':json.p, 'v':json.v};
     olhc_list.push(new_json);
-    return true;
+    return new_json;
   }
+}
+
+
+function add_to_olhc(json) {
+  var key = Math.floor(json.t / graph_type) * graph_type;
+  var last = _.last(olhc_list);
+
+  add_to_last(json, last);
+  
+  //is added new json?
+  return (key == last.t);
 }
 
 function updateOldestTimestamp(oldest) {
@@ -55,9 +64,9 @@ function getOLHC(count, callback) {
     type:'GET',
     url:'http://www.btckorea.org:8888/chart',
     success:function(json){
-      json = _.sortBy(json, function(item) { return item.time });
+      var last = _.last(olhc_list);
       _.each(json, function(item) {
-        add_to_olhc({'t': parseInt(item.time), 'p': parseFloat(item.price), 'v': parseFloat(item.last_qty) });
+        last = add_to_last({'t': parseInt(item.time), 'p': parseFloat(item.price), 'v': parseFloat(item.last_qty) }, last);
       });
       callback();
     },

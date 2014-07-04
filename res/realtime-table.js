@@ -9,7 +9,6 @@ $(function() {
   setInterval(function(){
     if(last_alive_tick + 60*1000 < new Date().getTime())
       window.location.reload(); 
-    
     last_alive_tick = new Date().getTime();
   }, 2*1000);
   
@@ -22,16 +21,21 @@ $(function() {
     icon: false
   });
 
+  //drawing table
   $.getJSON('http://j96.me:8888',function(json) {
 
+    //min max
+    $('#min_max tbody tr:last').append('<td id="min">' + json['min'] + '</td><td id="max">' + json['max'] + '</td>');
+    
+    //add row
     var history = json.history
-    history = _.sortBy(history, function(item) { return item.time });
-
     for(i in history)
       addRow(history[i], false);  
 
-    $('#min_max tbody tr:last').append('<td id="min">' + json['min'] + '</td><td id="max">' + json['max'] + '</td>');
-
+    //set title
+    var last = _.last(history);
+    document.title = numeral(last.price).format('0,0') + '(' + last.bitstamp + ')';
+    
   });
 
   var client = new Faye.Client('http://j96.me:8888/faye');
@@ -47,9 +51,6 @@ function addRow(json, can_flash) {
   $('#history tbody').prepend(makeRow(json));  
   if(can_flash)
     flash($('#history tbody tr:first'), 'green');
-
-  document.title = numeral(json.price).format('0,0') + '(' + json.bitstamp + ')';
-
 
   $('meta[name=description]').remove();
   $('meta[property="og:description"]').remove();
@@ -98,9 +99,9 @@ function makeRow(json) {
     '<td id="bitstamp" class="' + (is_bitstamp_max?'max':(is_bitstamp_min?'min':'')) + '">' + depth_style(json.bitstamp, 2) + ' ' + (is_bitstamp_max?'↑':(is_bitstamp_min?'↓':'')) + '</td>' +
     '<td id="volume" class="' + (is_large_amount?'large_amount':'') + '">' + depth_style(json.last_qty, 2) + '</td>';
 }
-function log(str) {
-  //$('#log').val(str + '\n' + $('#log').val());
-};
+
+
+//Utility
 
 zero = ["", "0", "00", "000", "0000"];
 function depth_style(num, digit) {
