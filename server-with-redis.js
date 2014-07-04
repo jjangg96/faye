@@ -51,16 +51,18 @@ var server = http.createServer(function(request, http_response) {
   
   if(path == '/chart')
   {
-    redis.lrange([REDIS_KEY, 0, REDIS_LIST_SIZE*100-1], function(err, response){
+    redis.sort([REDIS_KEY, 'limit', 0, REDIS_LIST_SIZE*100-1, 'ALPHA', 'DESC'], function(err, response){
+    //redis.lrange([REDIS_KEY, 0, REDIS_LIST_SIZE*100-1], function(err, response){
       http_response.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin':'*'});
-      http_response.end(JSON.stringify(JSON.parse('[' + response + ']')));
+      http_response.end(JSON.stringify(JSON.parse('[' + response.reverse() + ']')));
     });
   }
   else if(path == '/')
   {
-    redis.lrange([REDIS_KEY, -REDIS_LIST_SIZE, -1], function(err, response){
+    redis.sort([REDIS_KEY, 'limit', 0, REDIS_LIST_SIZE, 'ALPHA', 'DESC'], function(err, response){
+    //redis.lrange([REDIS_KEY, -REDIS_LIST_SIZE, -1], function(err, response){
       http_response.writeHead(200, {'Content-Type': 'application/json', 'Access-Control-Allow-Origin':'*'});
-      var json = {'history' : JSON.parse('[' + response + ']'), 'max' : max, 'min' : min};
+      var json = {'history' : JSON.parse('[' + response.reverse() + ']'), 'max' : max, 'min' : min};
       http_response.end(JSON.stringify(json));
     });
   }

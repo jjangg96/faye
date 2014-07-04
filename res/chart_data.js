@@ -59,8 +59,6 @@ function getOLHC(count, callback) {
       _.each(json, function(item) {
         add_to_olhc({'t': parseInt(item.time), 'p': parseFloat(item.price), 'v': parseFloat(item.last_qty) });
       });
-      olhc_list = _.sortBy(olhc_list, function(item) { return item.t });      
-      refresh(0);
       callback();
     },
     error:function(request,status,error){ console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error); }
