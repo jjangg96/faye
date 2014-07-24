@@ -239,6 +239,7 @@ svg {
     width: 41;
   }
 }
+
 @media only screen and (min-width : 768px) {
   #info-modal {
     margin-bottom: 4px;
@@ -250,7 +251,7 @@ svg {
   div.left {
     padding-right: 140px !important;  
   }
-  div.right {
+  div.rightside {
     position: absolute;
     top: 0px;
     right: 0px;
@@ -261,7 +262,6 @@ svg {
   info-modal {
     margin-bottom: 5px; 
   }
-
 }
 
 div.info {
