@@ -1,1 +1,1 @@
-/Users/imac/Documents/node/D3-Candlestick-Chart/min_chart.js
+/Users/jjangg96/Dropbox/iMacDocuments-ML/Documents/node.js/d3-chart/min_chart.js
