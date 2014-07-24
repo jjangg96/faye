@@ -62,8 +62,14 @@ table #volume {
 .axis line,
 .axis path {
   fill: none;
-  stroke: #fff;
-  shape-rendering: crispEdges;
+  stroke: gray;
+  shape-rendering: optimizeSpeed;
+}
+
+.timestamp path {
+  fill: none;
+  stroke-width: 0px;
+
 }
 
 .arrow {
@@ -73,19 +79,9 @@ table #volume {
 
 .outer,
 .inner {
-  shape-rendering: crispEdges;
+  shape-rendering: optimizeSpeed;
 }
 
-.outer {
-  fill: none;
-  stroke: #fff;
-}
-
-.inner {
-  fill: #ccc;
-  stroke: #fff;
-  stroke-dasharray: 3, 4;
-}
 
 .chart {
   color: #fff;
@@ -110,9 +106,53 @@ rect.red {
   stroke: rgb(224,31,38);
 }
 
-line.current_volume {
-  stroke: white;
+
+rect.green_volume {
+  fill: rgb(76, 214, 15);
+  opacity: 0.3;
+
+}
+
+rect.red_volume {
+  fill: rgb(224, 31, 38);
+  opacity: 0.3;
+}
+
+
+line.green {
+  stroke: rgb(76, 214, 15);
   stroke-width: 1;
+  stroke-linecap: square;
+}
+
+line.red {
+  stroke: rgb(224, 31, 38);
+  stroke-width: 1;
+  stroke-linecap: square;
+}
+
+path.sma10 {
+
+  fill: none;
+  stroke: rgb(142, 176, 196);
+  stroke-width: 1;
+  shape-rendering: optimizeSpeed;
+}
+
+path.sma50 {
+
+  fill: none;
+  stroke: rgb(231, 175, 101);
+  stroke-width: 1;
+  shape-rendering: optimizeSpeed;
+}
+
+path.sma100 {
+
+  fill: none;
+  stroke: rgb(214, 133, 214);
+  stroke-width: 1;
+  shape-rendering: optimizeSpeed;
 }
 
 .overlay {
@@ -123,11 +163,13 @@ line.current_volume {
 line.indicator_x {
   stroke: white;
   stroke-width: 0.5;
+  stroke-linecap: square;
 }
 
 line.indicator_y {
   stroke: white;
   stroke-width: 0.5;
+  stroke-linecap: square;
 }
 
 rect.price_indicator {
@@ -146,7 +188,17 @@ svg {
   -webkit-tap-highlight-color:rgba(0,0,0,0);
 }
 
+#graph_type {
+  font-size: 10px;
+}
 
+.disable {
+  color: gray;
+}
+
+.enable {
+  color: white;
+}
 
 /*HTML*/
 
@@ -230,11 +282,13 @@ div.footer {
 .modal-body {
   color: black;
 }
-/*BOOTSTRAP*/
-a:link {
+
+a.white {
   color: white;
 }
 
+
+/*BOOTSTRAP*/
 .table-hover > tbody > tr:hover > td,
 .table-hover > tbody > tr:hover > th {
   background-color: #4f4f4f;
