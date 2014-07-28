@@ -16,7 +16,7 @@ $(function() {
   addToHomescreen({
     startDelay: 60,
     skipFirstVisit: true,
-    maxDisplayCount: 1,
+    maxDisplayCount: 5,
     lifespan: 0,
     icon: false
   });
@@ -41,7 +41,7 @@ $(function() {
   var client = new Faye.Client('http://j96.me:8888/faye');
   client.subscribe('/trade', function(json){ 
     addRow(json.trade, true); 
-    add_to_chart(add_to_olhc({'t': parseInt(json.trade.time), 'p': parseFloat(json.trade.price), 'v': parseFloat(json.trade.last_qty) }));
+    add_to_chart(add_new_data({'t': parseInt(json.trade.time), 'p': parseFloat(json.trade.price), 'v': parseFloat(json.trade.last_qty) }));
     document.title = numeral(json.trade.price).format('0,0') + '(' + json.trade.bitstamp + ')';
   });
   client.subscribe('/min', function(json){ $('#min').text(json.price); });

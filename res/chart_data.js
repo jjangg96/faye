@@ -26,16 +26,14 @@ getOLHC(0, function() {
     init(); 
   }); 
 });
-function add_missing_olhc(last, json) {
+function add_missing_olhc(list, last, json) {
   var expected_timestamp = last.t + graph_type;
-  var new_array = [];
   if (json.t != expected_timestamp) {
     for (var j = expected_timestamp; j < json.t; j = j + graph_type) {
       var new_item = { t: j, o: last.c, l: last.c, h: last.c, c: last.c, v: 0};
-      new_array.push(new_item);
+      list.push(new_item);
     }
   }
-  return new_array;
 }
 
 function add_sma_list(list) {
@@ -53,8 +51,6 @@ function add_sma_list(list) {
     if(i>100)
       list[i].sma100 = _.reduce(_.last(value_array, 100), function(t, d){ return t + d; }, 0) / 100;
   }
-
-  return list;
 }
 
 function add_to_last(json, last) {
@@ -73,27 +69,22 @@ function add_to_last(json, last) {
   else
   {
     var new_json = {'t': key, 'o':json.p,'l':json.p, 'h':json.p, 'c':json.p, 'v':json.v};
-    
     if(last == null)
       last = new_json;
-    add_missing_olhc(last, new_json);
     
+    add_missing_olhc(olhc_list, last, new_json);    
     olhc_list.push(new_json);
     return new_json;
   }
 }
 
 
-function add_to_olhc(json) {
-  var key = Math.floor(json.t / graph_type) * graph_type;
-  var last = _.last(olhc_list);
-  
-  add_to_last(json, last);
-  
+function add_new_data(json) {
+  add_to_last(json, _.last(olhc_list));
+  olhc_list = _.sortBy(olhc_list, function(num){ return num.t; });
   add_sma_list(olhc_list);  
   
-  //is added new json?
-  return (key == last.t);
+  return true;
 }
 
 function updateOldestTimestamp(oldest) {
@@ -119,7 +110,10 @@ function getOLHC(count, callback) {
       _.each(json, function(item) {
         last = add_to_last({'t': parseInt(item.time), 'p': parseFloat(item.price), 'v': parseFloat(item.last_qty) }, last);
       });
+      
+      olhc_list = _.sortBy(olhc_list, function(num){ return num.t; });
       add_sma_list(olhc_list);
+      
       callback();
     },
     error:function(request,status,error){ console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error); }
