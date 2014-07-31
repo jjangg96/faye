@@ -80,7 +80,8 @@ faye.start(server, function(clientId, channel, data) {
 
   if(channel == '/trade') {
     //store publish data
-    redis.rpush(REDIS_KEY, JSON.stringify(data.trade), function(err, response) {
+    if(data.trade.price >= min/2 && data.trade.price > 0)
+      redis.rpush(REDIS_KEY, JSON.stringify(data.trade), function(err, response) {
       /*
       if(err)
         console.log('[' + new Date() + '][RedisErr] ' + err);
