@@ -35,8 +35,8 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="res/index.css">
     <link rel="stylesheet" type="text/css" href="res/addtohomescreen.css">
-
     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script type="text/javascript" src="res/jquery.cookie.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="res/addtohomescreen.js"></script>
     <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/d3/3.4.8/d3.min.js" charset="utf-8"></script>
@@ -44,12 +44,10 @@
     <script type="text/javascript" src="res/moment-with-langs.min.js"></script>
     <script src="http://cdnjs.cloudflare.com/ajax/libs/numeral.js/1.4.5/numeral.min.js"></script>
     <script type="text/javascript" src="http://www.btckorea.org:8888/faye/client.js"></script>
-    <script type="text/javascript" src="res/chart_data.min.js"></script>
     <script type="text/javascript" src="res/realtime-table.min.js"></script>
   </head>
 
   <body>
-    
     <div id="fb-root"></div>
     <script>(function(d, s, id) {
   var js, fjs = d.getElementsByTagName(s)[0];
@@ -68,11 +66,17 @@
       <div class="row">
         <div class="chart">
         </div>
-        <div class="button">
-          <a href='javascript:;' onclick='change_graph_type(0, this);' class='disable' id='graph_type'>1M</a>
-          <a href='javascript:;' onclick='change_graph_type(1, this);' class='disable' id='graph_type'>5M</a>
-          <a href='javascript:;' onclick='change_graph_type(2, this);' class='enable' id='graph_type'>15M</a>
-          <a href='javascript:;' onclick='change_graph_type(3, this);' class='disable' id='graph_type'>1H</a>
+        <div class="chart_menu">
+          <div class="chart_button">
+            <a href='javascript:;' onclick='change_graph_type(0, this);' class='graph_type_0' id='graph_type'>1M</a>
+            <a href='javascript:;' onclick='change_graph_type(1, this);' class='graph_type_1' id='graph_type'>5M</a>
+            <a href='javascript:;' onclick='change_graph_type(2, this);' class='graph_type_2' id='graph_type'>15M</a>
+            <a href='javascript:;' onclick='change_graph_type(3, this);' class='graph_type_3' id='graph_type'>1H</a>
+          </div>
+          <div class="chart_zoom_in_out">
+            <a href='javascript:;' onclick='zoom_in();'><span class="glyphicon glyphicon-plus-sign"></span></a>
+            <a href='javascript:;' onclick='zoom_out();'><span class="glyphicon glyphicon-minus-sign"></span></a>
+          </div>
         </div>
       </div>
       <div class="row visible-xs-block">
@@ -186,6 +190,7 @@
       ga('send', 'pageview');
 
     </script>
+    <script type="text/javascript" src="res/chart_data.min.js"></script>
     <script type="text/javascript" src="res/chart.min.js"></script>
     <div id="spot-im-root"></div><script>!function(t,e,o){function p(){var t=e.createElement("script");t.type="text/javascript",t.async=!0,t.src=("https:"==e.location.protocol?"https":"http")+":"+o,e.body.appendChild(t)}t.spotId="fcf780d10cb9450446100f4e8217affb",t.spotName="lobby",t.allowDesktop=!0,t.allowMobile=!0,t.containerId="spot-im-root",p()}(window.SPOTIM={},document,"//www.spot.im/embed/scripts/launcher.js");</script>
 

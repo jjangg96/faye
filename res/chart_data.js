@@ -2,16 +2,20 @@ var oldest_timestamp = 9999999999;
 var lastest_timestamp = 0;
 var olhc_list = [];
 var graph_type_list = [60 * 1, 60 * 5, 60 * 15, 60 * 60, 60 * 60 * 24, 60 * 60 * 24 * 7];
-var graph_type = graph_type_list[2]; // second
+var graph_type_cookie = ($.cookie('graph_type') == undefined)?2:$.cookie('graph_type'); // second
+$('a#graph_type').removeClass('enable');
+$('a.graph_type_' + graph_type_cookie).toggleClass('enable', true);
+var graph_type = graph_type_list[graph_type_cookie]; // second
 
 function change_graph_type(i, obj) {
   oldest_timestamp = 9999999999;
   lastest_timestamp = 0;
   graph_type = graph_type_list[i];
-  olhc_list = [];
+  $.cookie('graph_type', i);
 
-  $('a#graph_type').attr('class', 'disable');
-  $(obj).attr('class', 'enable');
+
+  $('a#graph_type').removeClass('enable');
+  $(obj).toggleClass('enable', true);
 
   getOLHC(0, function () {
     init();
@@ -106,6 +110,7 @@ function getOLHC(count, callback) {
     type:'GET',
     url:'http://www.btckorea.org:8888/chart',
     success:function(json){
+      olhc_list = [];
       var last = _.last(olhc_list);
       _.each(json, function(item) {
         last = add_to_last({'t': parseInt(item.time), 'p': parseFloat(item.price), 'v': parseFloat(item.last_qty) }, last);

@@ -118,6 +118,10 @@ rect.red_volume {
   opacity: 0.3;
 }
 
+rect.last_volume {
+  opacity: 0.7;
+}
+
 
 line.green {
   stroke: rgb(76, 214, 15);
@@ -192,13 +196,28 @@ svg {
   font-size: 10px;
 }
 
-.disable {
+.chart_button {
   color: gray;
 }
 
 .enable {
   color: white;
 }
+
+.chart_menu {
+  position: relative;
+
+}
+.chart_zoom_in_out {
+  position: absolute;
+  right: 20px;
+  top: 0px;
+}
+
+a {
+  color: gray;
+}
+
 
 /*HTML*/
 
