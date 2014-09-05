@@ -42,6 +42,15 @@ table #volume {
 .zero {
   color: gray;
 }
+
+tr#xcoin td#price {
+  color: white;
+}
+
+tr#korbit td#price {
+  color: rgb(200, 200, 200);
+}
+
 .max {
   color: #72bf44;
 
@@ -49,6 +58,11 @@ table #volume {
 .min {
   color: red;
 }
+
+
+
+
+
 .large_amount {
   color: green;
   font-weight: bold;
@@ -215,12 +229,15 @@ svg {
 }
 
 a {
+  color: white;
+}
+
+a#graph_type {
   color: gray;
 }
 
 
 /*HTML*/
-
 
 
 
