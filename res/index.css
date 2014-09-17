@@ -214,9 +214,6 @@ svg {
   color: gray;
 }
 
-.enable {
-  color: white;
-}
 
 .chart_menu {
   position: relative;
@@ -236,6 +233,10 @@ a#graph_type {
   color: gray;
 }
 
+
+a.enable {
+  color: white;
+}
 
 /*HTML*/
 
