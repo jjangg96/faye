@@ -229,7 +229,10 @@ a {
   color: white;
 }
 
-a#graph_type {
+a.graph_type_0,
+a.graph_type_1,
+a.graph_type_2,
+a.graph_type_3 {
   color: gray;
 }
 
