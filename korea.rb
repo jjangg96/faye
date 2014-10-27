@@ -4,6 +4,7 @@ require 'net/http'
 require 'nokogiri'
 require 'faye'
 require 'eventmachine'
+require 'mechanize'
 
 @is_first = true
 @replacements = [
@@ -50,22 +51,35 @@ end
 
 def xcoin
   begin
-    json_array = JSON.parse(parse_http('https://www.xcoin.co.kr/json/contractListJson.action'))
-    json_array.each do |item| 
+    agent = Mechanize.new { |a|
+      a.user_agent_alias = 'Mac Safari'
+    }
+
+    res = agent.get 'https://www.xcoin.co.kr'
+    html_doc = Nokogiri::HTML(res.body)
+    csrf_token = html_doc.css("input[name='csrf_xcoin_name']")[0]['value']
+
+    ajax_headers = { 'X-Requested-With' => 'XMLHttpRequest', 'Content-Type' => 'application/x-www-form-urlencoded; charset=UTF-8', 'Accept' => 'application/json, text/javascript, */*; q=0.01'}
+    res = agent.post 'https://www.xcoin.co.kr/json/contractListJson', { "csrf_xcoin_name" => csrf_token }, ajax_headers
+
+    json_array = JSON.parse(res.body)
+    json_array.each do |item|
 
       time = Time.now.getutc.to_i
-      last_price = item["krwAmt"]
-      last_qty = item["btcAmt"]
+      last_price = item["KRW_AMT"]
+      last_qty = item["BTC_AMT"]
+
+
 
       @replacements.each do |pair|
         last_price.gsub!(pair[0], pair[1])
         last_qty.gsub!(pair[0], pair[1])
       end
 
-      currentTime = last_price+last_qty+item["contractDt"].slice(-5,5)
-      if currentTime == @xcoin_realFirstValue         
+      currentTime = last_price+last_qty+item["CONTRACT_DT"].slice(-5,5)
+      if currentTime == @xcoin_realFirstValue
         break
-      end 
+      end
 
       bitstamp = bitstamp_price
 
@@ -77,16 +91,15 @@ def xcoin
 
         read_price(last_price, '엑스꼬인')
       end
-      
+
       if json_array.first == item
         @xcoin_firstValue = currentTime;
       end
     end
     @xcoin_realFirstValue = @xcoin_firstValue;
-
   rescue Exception => exception
     #puts "#{exception.message}\n#{exception.backtrace.join("\n")}"
-end
+  end
 end
 
 def korbit
@@ -104,12 +117,12 @@ def korbit
       end
 
       currentTime = last_price+last_qty+time.to_s
-      if currentTime == @korbit_realFirstValue         
+      if currentTime == @korbit_realFirstValue
         break
-      end 
+      end
 
       bitstamp = bitstamp_price
-      
+
       if @is_first == false
         text = "%s\t%s(%s)\t%.2f\t%s\n" % [Time.at(time).strftime(%"%H:%M"), show_price(last_price), bitstamp.to_s, last_qty, "korbit"]
         puts text;
@@ -156,13 +169,14 @@ end
 
 printf "시간\t" + "BTC" + "\t\t수량\t사이트\n"
 
-while(true)
-  begin
-    xcoin
-    korbit
-    @is_first = false
-    sleep(3)
-  rescue Exception => exception
+begin
+  while(true)
+    begin
+      xcoin
+      korbit
+      @is_first = false
+      sleep(3)
+    rescue Exception => exception
+    end
   end
 end
-
