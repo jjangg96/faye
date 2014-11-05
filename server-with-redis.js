@@ -46,9 +46,9 @@ function notice(type, price) {
 
 var http = require('http');
 var server = http.createServer(function(request, http_response) {
-  
+
   var path = url.parse(request.url).path;
-  
+
   if(path == '/chart')
   {
     redis.sort([REDIS_KEY, 'limit', 0, REDIS_LIST_SIZE*100-1, 'ALPHA', 'DESC'], function(err, response){
@@ -82,6 +82,8 @@ faye.start(server, function(clientId, channel, data) {
     //store publish data
     if(data.trade.price >= min/2 && data.trade.price > 0)
       redis.rpush(REDIS_KEY, JSON.stringify(data.trade), function(err, response) {
+      if(err)
+        console.log('[' + new Date() + '][RedisErr] ' + err);
       /*
       if(err)
         console.log('[' + new Date() + '][RedisErr] ' + err);
@@ -102,4 +104,4 @@ faye.start(server, function(clientId, channel, data) {
 //Error catch
 process.on('uncaughtException', function (err) {
   console.log('[' + new Date() + '][Error] ' + err.stack);
-}); 
+});
