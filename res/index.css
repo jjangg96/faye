@@ -2,7 +2,7 @@ body {
   font-family: Tahoma, Geneva, sans-serif;
   background-color: black !important;
   color: white !important;
-  
+
 }
 table {
   margin: 0px;
@@ -51,6 +51,9 @@ tr#korbit td#price {
   color: rgb(200, 200, 200);
 }
 
+tr#coinone td#price {
+  color: rgb(39, 86, 162);
+}
 .max {
   color: #72bf44;
 
@@ -105,10 +108,10 @@ tr#korbit td#price {
 
 rect.green {
   fill: rgb(76, 214, 15);
-  
+
 /*
   fill: black;
-*/  
+*/
   stroke-width:1;
   stroke: rgb(76, 214, 15);
 
@@ -269,8 +272,8 @@ a.enable {
   div.down {
     padding: 0px 0px 0px 0px !important;
   }
-  
-  
+
+
 }
 
 @media only screen and (min-width : 321px) and (max-width : 768px) {
@@ -284,12 +287,12 @@ a.enable {
   #info-modal {
     margin-bottom: 4px;
   }
-  
+
   div.row {
     position: relative;
   }
   div.left {
-    padding-right: 140px !important;  
+    padding-right: 140px !important;
   }
   div.rightside {
     position: absolute;
@@ -300,7 +303,7 @@ a.enable {
   }
 
   info-modal {
-    margin-bottom: 5px; 
+    margin-bottom: 5px;
   }
 }
 
@@ -310,8 +313,8 @@ div.info {
 
 div.footer {
   bottom: 0px;
-  margin:10px 0px 50px 0px; 
-  text-align: center; 
+  margin:10px 0px 50px 0px;
+  text-align: center;
   font-size:12px;
 }
 

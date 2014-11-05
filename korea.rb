@@ -16,7 +16,7 @@ require 'mechanize'
 @PRICE_MAX_LENGTH = 7
 
 def bitstamp_price
-  json = JSON.parse(parse_http('https://www.bitstamp.net/api/ticker/'))
+  json = JSON.parse(parse_https('https://www.bitstamp.net/api/ticker/'))
   json['last']
 end
 
@@ -28,6 +28,20 @@ def broadcast(channel, text)
 end
 
 def parse_http(url_string)
+  url = URI.parse(url_string)
+  response = Net::HTTP.start(url.host) do |http|
+    http.get url.request_uri, 'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9) AppleWebKit/537.71 (KHTML, like Gecko) Version/7.0 Safari/537.71'
+  end
+  case response
+  when Net::HTTPRedirection
+  when Net::HTTPSuccess
+    response.body
+  else
+    ""
+  end
+end
+
+def parse_https(url_string)
   url = URI.parse(url_string)
   response = Net::HTTP.start(url.host, use_ssl: true, verify_mode: OpenSSL::SSL::VERIFY_NONE) do |http|
     http.get url.request_uri, 'User-Agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9) AppleWebKit/537.71 (KHTML, like Gecko) Version/7.0 Safari/537.71'
@@ -102,9 +116,46 @@ def xcoin
   end
 end
 
+def coinone
+  begin
+    json = JSON.parse(parse_http('http://api.coinone.co.kr/transactions/?format=json&time=hour'))
+    json_array = json["transactions"]
+    json_array = json_array.sort_by { |hash| hash['timestamp'].to_i }.reverse
+    json_array.each do |item|
+      time = item["timestamp"].to_i;
+      last_price = item["price"]
+      last_qty = item["qty"]
+
+      currentTime = last_price+last_qty+time.to_s
+      if currentTime == @coinone_realFirstValue
+        break
+      end
+
+      bitstamp = bitstamp_price
+
+      if @is_first == false
+        text = "%s\t%s(%s)\t%.2f\t%s\n" % [Time.at(time).strftime(%"%H:%M"), show_price(last_price), bitstamp.to_s, last_qty, "coinone"]
+        puts text;
+
+        broadcast("/trade", {'trade' => {'time' => time, 'price' => last_price, 'bitstamp' => bitstamp, 'last_qty' => last_qty, 'site' => 'coinone'}})
+      end
+      read_price(last_price, '꼬인원')
+
+      if json_array.first == item
+        @coinone_firstValue = currentTime;
+      end
+
+    end
+    @coinone_realFirstValue = @coinone_firstValue;
+  rescue Exception => exception
+    #puts "#{exception.message}\n#{exception.backtrace.join("\n")}"
+  end
+
+end
+
 def korbit
   begin
-    json_array = JSON.parse(parse_http('https://api.korbit.co.kr/v1/transactions'))
+    json_array = JSON.parse(parse_https('https://api.korbit.co.kr/v1/transactions'))
     json_array.each do |item|
 
       time = item["timestamp"].to_i / 1000;
@@ -139,7 +190,7 @@ def korbit
 
   rescue Exception => exception
     #puts "#{exception.message}\n#{exception.backtrace.join("\n")}"
-end
+  end
 end
 
 
@@ -174,6 +225,7 @@ begin
     begin
       xcoin
       korbit
+      coinone
       @is_first = false
       sleep(3)
     rescue Exception => exception
