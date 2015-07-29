@@ -9,7 +9,8 @@ var faye = require('./server.js'),
 
 var max = 0,
     min = 9999999,
-    current_day = 0;
+    current_day = 0,
+    timestamp = 0;
 
 
 function init() {
@@ -19,7 +20,7 @@ function init() {
 
 function update_min_max(json) {
   var now = new Date();
-  var timestamp = now.getTime();
+  timestamp = now.getTime();
 
   if(now.getDay() != current_day)
   {
@@ -69,7 +70,7 @@ var server = http.createServer(function(request, http_response) {
   else
   {
     http_response.writeHead(200, {'Content-Type': 'text/plain', 'Access-Control-Allow-Origin':'*'});
-    http_response.end('I\'m alive');
+    http_response.end("" + (new Date().getTime() - timestamp));
   }
 });
 
@@ -82,6 +83,8 @@ faye.start(server, function(clientId, channel, data) {
     //store publish data
     if(data.trade.price >= min/2 && data.trade.price > 0)
       redis.rpush(REDIS_KEY, JSON.stringify(data.trade), function(err, response) {
+      if(err)
+        console.log('[' + new Date() + '][RedisErr] ' + err);
       /*
       if(err)
         console.log('[' + new Date() + '][RedisErr] ' + err);

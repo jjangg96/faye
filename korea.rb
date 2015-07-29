@@ -5,6 +5,7 @@ require 'nokogiri'
 require 'faye'
 require 'eventmachine'
 require 'mechanize'
+require 'date'
 
 @is_first = true
 @replacements = [
@@ -65,32 +66,19 @@ end
 
 def xcoin
   begin
-    agent = Mechanize.new { |a|
-      a.user_agent_alias = 'Mac Safari'
-    }
-
-    res = agent.get 'https://www.xcoin.co.kr'
-    html_doc = Nokogiri::HTML(res.body)
-    csrf_token = html_doc.css("input[name='csrf_xcoin_name']")[0]['value']
-
-    ajax_headers = { 'X-Requested-With' => 'XMLHttpRequest', 'Content-Type' => 'application/x-www-form-urlencoded; charset=UTF-8', 'Accept' => 'application/json, text/javascript, */*; q=0.01'}
-    res = agent.post 'https://www.xcoin.co.kr/json/contractListJson', { "csrf_xcoin_name" => csrf_token }, ajax_headers
-
-    json_array = JSON.parse(res.body)
+    json = JSON.parse(parse_https('https://api.xcoin.co.kr/public/recent_transactions'))
+    json_array = json["data"]
     json_array.each do |item|
-
-      time = Time.now.getutc.to_i
-      last_price = item["KRW_AMT"]
-      last_qty = item["BTC_AMT"]
-
-
+      time = DateTime.strptime(item["transaction_date"]+" +0900", "%Y-%m-%d %H:%M:%S %z").to_time.to_i
+      last_price = item["price"]
+      last_qty = item["units_traded"]
 
       @replacements.each do |pair|
         last_price.gsub!(pair[0], pair[1])
         last_qty.gsub!(pair[0], pair[1])
       end
 
-      currentTime = last_price+last_qty+item["CONTRACT_DT"].slice(-5,5)
+      currentTime = last_price+last_qty+time.to_s
       if currentTime == @xcoin_realFirstValue
         break
       end
@@ -118,8 +106,10 @@ end
 
 def coinone
   begin
-    json = JSON.parse(parse_http('http://api.coinone.co.kr/transactions/?format=json&time=hour'))
-    json_array = json["transactions"]
+    #https://api.coinone.co.kr/trades/?format=json&time=hour?format=json&time=hour
+    #http://api.coinone.co.kr/transactions/?format=json&time=hour
+    json = JSON.parse(parse_https('https://api.coinone.co.kr/trades/?format=json&time=hour?format=json&time=hour'))
+    json_array = json["completeOrders"]
     json_array = json_array.sort_by { |hash| hash['timestamp'].to_i }.reverse
     json_array.each do |item|
       time = item["timestamp"].to_i;
@@ -219,7 +209,8 @@ end
 
 
 printf "시간\t" + "BTC" + "\t\t수량\t사이트\n"
-
+running = true
+Kernel.trap("INT") { running = false }
 begin
   while(true)
     begin
@@ -227,8 +218,9 @@ begin
       korbit
       coinone
       @is_first = false
-      sleep(3)
+      sleep(1)
     rescue Exception => exception
+      puts exception
     end
   end
 end
