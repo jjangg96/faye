@@ -10,7 +10,7 @@ var faye = require('./server.js'),
 var max = 0,
     min = 9999999,
     current_day = 0,
-    timestamp = 0;
+    timestamp = new Date().getTime();
 
 
 function init() {
@@ -47,9 +47,9 @@ function notice(type, price) {
 
 var http = require('http');
 var server = http.createServer(function(request, http_response) {
-  
+
   var path = url.parse(request.url).path;
-  
+
   if(path == '/chart')
   {
     redis.sort([REDIS_KEY, 'limit', 0, REDIS_LIST_SIZE*100-1, 'ALPHA', 'DESC'], function(err, response){
