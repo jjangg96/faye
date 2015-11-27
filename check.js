@@ -2,6 +2,7 @@ var request = require("request");
 
 function restart() {
   var spawn = require('child_process').spawn;
+  spawn('sudo', ['pkill', '-9', '-f', 'korea']);
   var child = spawn('sudo', ['service', 'korea', 'restart']);
 }
 

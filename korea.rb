@@ -21,6 +21,14 @@ def bitstamp_price
   json['last']
 end
 
+@LAST_OKCOIN = 0
+def okcoin_future_price
+  json = JSON.parse(parse_https('https://www.okcoin.com/api/v1/future_ticker.do?symbol=btc_usd&contract_type=this_week'))
+  ret = json['ticker']['last']
+  @LAST_OKCOIN = ret if ret != nil
+  return @LAST_OKCOIN
+end
+
 def broadcast(channel, text)
   message = {:channel => channel, :data => text}
   uri = URI.parse('http://j96.me:8888/faye')
@@ -84,12 +92,13 @@ def xcoin
       end
 
       bitstamp = bitstamp_price
+      okcoin = okcoin_future_price
 
       if @is_first == false
         text = "%s\t%s(%s)\t%.2f\t%s\n" % [Time.at(time).strftime(%"%H:%M"), show_price(last_price), bitstamp.to_s, last_qty, "xcoin"]
         puts text;
 
-        broadcast("/trade", {'trade' => {'time' => time, 'price' => last_price, 'bitstamp' => bitstamp, 'last_qty' => last_qty, 'site' => 'xcoin'}})
+        broadcast("/trade", {'trade' => {'time' => time, 'price' => last_price, 'okcoin' => okcoin, 'bitstamp' => bitstamp, 'last_qty' => last_qty, 'site' => 'xcoin'}})
 
         read_price(last_price, '엑스꼬인')
       end
@@ -122,12 +131,14 @@ def coinone
       end
 
       bitstamp = bitstamp_price
+      okcoin = okcoin_future_price
+
 
       if @is_first == false
         text = "%s\t%s(%s)\t%.2f\t%s\n" % [Time.at(time).strftime(%"%H:%M"), show_price(last_price), bitstamp.to_s, last_qty, "coinone"]
         puts text;
 
-        broadcast("/trade", {'trade' => {'time' => time, 'price' => last_price, 'bitstamp' => bitstamp, 'last_qty' => last_qty, 'site' => 'coinone'}})
+        broadcast("/trade", {'trade' => {'time' => time, 'price' => last_price, 'okcoin' => okcoin, 'bitstamp' => bitstamp, 'last_qty' => last_qty, 'site' => 'coinone'}})
       end
       read_price(last_price, '꼬인원')
 
@@ -163,12 +174,13 @@ def korbit
       end
 
       bitstamp = bitstamp_price
+      okcoin = okcoin_future_price
 
       if @is_first == false
         text = "%s\t%s(%s)\t%.2f\t%s\n" % [Time.at(time).strftime(%"%H:%M"), show_price(last_price), bitstamp.to_s, last_qty, "korbit"]
         puts text;
 
-        broadcast("/trade", {'trade' => {'time' => time, 'price' => last_price, 'bitstamp' => bitstamp, 'last_qty' => last_qty, 'site' => 'korbit'}})
+        broadcast("/trade", {'trade' => {'time' => time, 'price' => last_price, 'okcoin' => okcoin, 'bitstamp' => bitstamp, 'last_qty' => last_qty, 'site' => 'korbit'}})
       end
       read_price(last_price, '꼬빗')
 
