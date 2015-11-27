@@ -41,7 +41,7 @@ $(function() {
   var client = new Faye.Client('http://j96.me:8888/faye');
   client.subscribe('/trade', function(json){ 
     addRow(json.trade, true); 
-    add_to_chart(add_new_data({'t': parseInt(json.trade.time), 'p': parseFloat(json.trade.price), 'v': parseFloat(json.trade.last_qty) }));
+    add_to_chart(add_new_data({'t': parseInt(json.trade.time), 'p': parseFloat(json.trade.price), 'v': parseFloat(json.trade.last_qty), 'ok': parseFloat(json.trade.okcoin) }));
     document.title = numeral(json.trade.price).format('0,0') + '(' + json.trade.okcoin + ')';
   });
   client.subscribe('/min', function(json){ $('#min').text(json.price); });

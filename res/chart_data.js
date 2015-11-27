@@ -34,7 +34,7 @@ function add_missing_olhc(list, last, json) {
   var expected_timestamp = last.t + graph_type;
   if (json.t != expected_timestamp) {
     for (var j = expected_timestamp; j < json.t; j = j + graph_type) {
-      var new_item = { t: j, o: last.c, l: last.c, h: last.c, c: last.c, v: 0};
+      var new_item = { t: j, o: last.c, l: last.c, h: last.c, c: last.c, v: 0, ok: last.ok};
       list.push(new_item);
     }
   }
@@ -68,11 +68,12 @@ function add_to_last(json, last) {
     last.h = (last.h<p?p:last.h);
     last.l = (last.l>p?p:last.l);
     last.v += json.v;
+    last.ok = (last.ok<json.ok?json.ok:last.ok);
     return last;
   }
   else
   {
-    var new_json = {'t': key, 'o':json.p,'l':json.p, 'h':json.p, 'c':json.p, 'v':json.v};
+    var new_json = {'t': key, 'o':json.p,'l':json.p, 'h':json.p, 'c':json.p, 'v':json.v, 'ok':json.ok};
     if(last == null)
       last = new_json;
     
@@ -113,7 +114,7 @@ function getOLHC(count, callback) {
       olhc_list = [];
       var last = _.last(olhc_list);
       _.each(json, function(item) {
-        last = add_to_last({'t': parseInt(item.time), 'p': parseFloat(item.price), 'v': parseFloat(item.last_qty) }, last);
+        last = add_to_last({'t': parseInt(item.time), 'p': parseFloat(item.price), 'v': parseFloat(item.last_qty), 'ok': (item.okcoin == null?0:parseFloat(item.okcoin))}, last);
       });
       
       olhc_list = _.sortBy(olhc_list, function(num){ return num.t; });

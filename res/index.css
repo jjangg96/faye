@@ -107,7 +107,7 @@ tr#coinone td#price {
 }
 
 rect.green {
-  fill: rgb(76, 214, 15);
+  fill: black;
 
 /*
   fill: black;
@@ -118,25 +118,25 @@ rect.green {
 }
 
 rect.red {
-  fill: rgb(224,31,38);
+  fill: #c51c1c;
   stroke-width:1;
-  stroke: rgb(224,31,38);
+  stroke: rgb(240,38,28);
 }
 
 
 rect.green_volume {
   fill: rgb(76, 214, 15);
-  opacity: 0.3;
+  opacity: 0.5;
 
 }
 
 rect.red_volume {
   fill: rgb(224, 31, 38);
-  opacity: 0.3;
+  opacity: 0.5;
 }
 
 rect.last_volume {
-  opacity: 0.7;
+  opacity: 0.9;
 }
 
 
@@ -147,7 +147,7 @@ line.green {
 }
 
 line.red {
-  stroke: rgb(224, 31, 38);
+  stroke: #c51c1c;
   stroke-width: 1;
   stroke-linecap: square;
 }
@@ -173,6 +173,14 @@ path.sma100 {
   fill: none;
   stroke: rgb(214, 133, 214);
   stroke-width: 1;
+  shape-rendering: optimizeSpeed;
+}
+
+path.okcoin {
+
+  fill: none;
+  stroke: rgb(200, 200, 200);
+  stroke-width: 2;
   shape-rendering: optimizeSpeed;
 }
 
